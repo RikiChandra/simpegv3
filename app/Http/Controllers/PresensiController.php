@@ -14,6 +14,16 @@ class PresensiController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public $user;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->user = auth()->user();
+            return $next($request);
+        });
+    }
+
     public function index()
     {
         $user = Auth::user();
@@ -35,7 +45,7 @@ class PresensiController extends Controller
             $presensis->whereMonth('tanggal', $request->bulan)
                 ->whereYear('tanggal', $request->tahun);
         }
-
+        $this->authorize('HRD', $this->user);
         return view('presensi.data-presensi', [
             'presensis' => $presensis->get(),
         ]);
@@ -64,7 +74,7 @@ class PresensiController extends Controller
         $currentTime = \Carbon\Carbon::now('Asia/Jakarta');
         $status = $isWithinRadius ? 'Hadir' : 'Tidak Masuk'; // Default status
 
-        if ($isWithinRadius && $currentTime->format('H:i:s') > '08:00:00') {
+        if ($isWithinRadius && $currentTime->format('H:i:s') > '08:15:00') {
             $status = 'Terlambat';
         }
 

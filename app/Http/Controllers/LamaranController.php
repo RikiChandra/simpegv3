@@ -12,9 +12,19 @@ class LamaranController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public $user;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->user = auth()->user();
+            return $next($request);
+        });
+    }
     public function index()
     {
         //
+        $this->authorize('HRD', $this->user);
         return view('lamaran.index', [
             'lamarans' => Lamaran::with('lowongan')->get(),
         ]);
@@ -84,6 +94,7 @@ class LamaranController extends Controller
     public function destroy(Lamaran $lamaran)
     {
         //
+        $this->authorize('HRD', $this->user);
         if (Storage::exists($lamaran->resume)) {
             Storage::delete($lamaran->resume);
         }

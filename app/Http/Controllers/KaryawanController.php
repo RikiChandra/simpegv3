@@ -10,9 +10,19 @@ use Illuminate\Support\Facades\Storage;
 class KaryawanController extends Controller
 {
     //
+    public $user;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->user = auth()->user();
+            return $next($request);
+        });
+    }
 
     public function index()
     {
+        $this->authorize('HRD', $this->user);
         return view('karyawan.index', [
             'karyawans' => Karyawan::all(),
 
@@ -21,6 +31,7 @@ class KaryawanController extends Controller
 
     public function create()
     {
+        $this->authorize('HRD', $this->user);
         return view('karyawan.create', [
             'user' => User::all(),
         ]);
@@ -28,6 +39,7 @@ class KaryawanController extends Controller
 
     public function store(Request $request)
     {
+        $this->authorize('HRD', $this->user);
         $validatedData = $request->validate([
             'nama' => 'required',
             'users_id' => 'required',
@@ -55,6 +67,7 @@ class KaryawanController extends Controller
 
     public function edit(Karyawan $karyawan)
     {
+        $this->authorize('HRD', $this->user);
         return view('karyawan.edit', [
             'karyawan' => $karyawan,
             'user' => User::all(),
@@ -63,6 +76,7 @@ class KaryawanController extends Controller
 
     public function update(Request $request, Karyawan $karyawan)
     {
+        $this->authorize('HRD', $this->user);
         $validatedData = $request->validate([
             'nama' => 'required',
             'users_id' => 'required',
@@ -96,6 +110,7 @@ class KaryawanController extends Controller
 
     public function destroy(Karyawan $karyawan)
     {
+        $this->authorize('HRD', $this->user);
 
         if (Storage::exists($karyawan->foto)) {
             Storage::delete($karyawan->foto);

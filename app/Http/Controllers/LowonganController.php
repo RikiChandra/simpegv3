@@ -12,9 +12,21 @@ class LowonganController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public $user;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->user = auth()->user();
+            return $next($request);
+        });
+    }
+
     public function index()
     {
         //
+        $this->authorize('HRD', $this->user);
         return view('lowongan.index', [
             'lowongans' => Lowongan::all(),
         ]);
@@ -27,6 +39,7 @@ class LowonganController extends Controller
         $lowongans = Lowongan::whereDate('batas_waktu_mulai', '<=', $now)
             ->whereDate('batas_waktu_selesai', '>=', $now)
             ->get();
+
 
         return view('career.index', ['lowongans' => $lowongans]);
     }
@@ -45,6 +58,7 @@ class LowonganController extends Controller
     public function create()
     {
         //
+        $this->authorize('HRD', $this->user);
         return view('lowongan.create');
     }
 
@@ -54,6 +68,7 @@ class LowonganController extends Controller
     public function store(Request $request)
     {
         //
+        $this->authorize('HRD', $this->user);
         $validatedData = $request->validate([
             'nama_lowongan' => 'required',
             'jenis_pekerjaan' => 'required',
@@ -83,6 +98,7 @@ class LowonganController extends Controller
     public function edit(Lowongan $lowongan)
     {
         //
+        $this->authorize('HRD', $this->user);
         return view('lowongan.edit', [
             'lowongan' => $lowongan,
         ]);
@@ -94,7 +110,7 @@ class LowonganController extends Controller
     public function update(Request $request, Lowongan $lowongan)
     {
         //
-
+        $this->authorize('HRD', $this->user);
         $validatedData = $request->validate([
             'nama_lowongan' => 'required',
             'jenis_pekerjaan' => 'required',
@@ -117,7 +133,7 @@ class LowonganController extends Controller
     public function destroy(Lowongan $lowongan)
     {
         //
-
+        $this->authorize('HRD', $this->user);
         Lowongan::destroy($lowongan->id);
 
         return redirect('lowongan')->with('success', 'Lowongan berhasil dihapus!');

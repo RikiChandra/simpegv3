@@ -10,9 +10,19 @@ class JamKerjaController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public $user;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->user = auth()->user();
+            return $next($request);
+        });
+    }
     public function index()
     {
         //
+        $this->authorize('HRD', $this->user);
         return view('manajemen.index', [
             'jamKerjas' => JamKerja::all(),
         ]);
@@ -32,7 +42,7 @@ class JamKerjaController extends Controller
     public function store(Request $request)
     {
         //
-
+        $this->authorize('HRD', $this->user);
         $validatedData = $request->validate([
             'hari' => 'required',
             'jam_masuk' => 'required',
@@ -60,6 +70,7 @@ class JamKerjaController extends Controller
     public function edit(JamKerja $jamKerja)
     {
         //
+        $this->authorize('HRD', $this->user);
         $jamKerja = JamKerja::find($jamKerja->id);
         return response()->json($jamKerja);
     }
@@ -70,7 +81,7 @@ class JamKerjaController extends Controller
     public function update(Request $request, JamKerja $jamKerja)
     {
         //
-
+        $this->authorize('HRD', $this->user);
         $validatedData = $request->validate([
             'hari' => 'required',
             'jam_masuk' => 'required',
@@ -91,6 +102,7 @@ class JamKerjaController extends Controller
     {
         //
 
+        $this->authorize('HRD', $this->user);
         JamKerja::destroy($jamKerja->id);
 
         return redirect()->route('jam-kerja.index')->with('success', 'Jam Kerja berhasil dihapus');
