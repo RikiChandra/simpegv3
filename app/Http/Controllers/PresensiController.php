@@ -29,8 +29,6 @@ class PresensiController extends Controller
         $user = Auth::user();
         $presensis = $user->presensis;
         $jam_kerja = JamKerja::select('id', 'latitude', 'longitude')->first();
-
-        // Check if the user has attended today
         $hasAttended = $presensis->where('tanggal', Carbon::now()->format('Y-m-d'))->isNotEmpty();
 
         return view('presensi.index', compact('presensis', 'jam_kerja', 'hasAttended'));

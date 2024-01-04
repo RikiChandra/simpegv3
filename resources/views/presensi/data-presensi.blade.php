@@ -6,9 +6,9 @@
             <div class="mb-3">
                 <form method="get" action="{{ route('presensi.data') }}">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-4 mb-3">
                             <label for="bulan">Bulan:</label>
-                            <select name="bulan" id="bulan" class="form-control">
+                            <select name="bulan" id="bulan" class="form-control select2">
                                 @for ($i = 1; $i <= 12; $i++)
                                     <option value="{{ $i }}" {{ request('bulan') == $i ? 'selected' : '' }}>
                                         {{ date('F', mktime(0, 0, 0, $i, 1)) }}
@@ -16,9 +16,9 @@
                                 @endfor
                             </select>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 mb-3">
                             <label for="tahun">Tahun:</label>
-                            <select name="tahun" id="tahun" class="form-control">
+                            <select name="tahun" id="tahun" class="form-control select2">
                                 @for ($i = date('Y'); $i >= 2020; $i--)
                                     <option value="{{ $i }}" {{ request('tahun') == $i ? 'selected' : '' }}>
                                         {{ $i }}
@@ -26,10 +26,18 @@
                                 @endfor
                             </select>
                         </div>
-                        <div class="col-md-4">
-                            <button type="submit" class="btn btn-primary mt-4">Filter</button>
+                        <div class="col-md-1 mb-3">
+                            <label>&nbsp;</label>
+                            <button type="submit" class="btn btn-primary btn-block"><i class="nav-icon fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div class="col-md-1 mb-3">
+                            <label>&nbsp;</label>
+                            <a href="" class="btn btn-success btn-block" target="_blank"><i
+                                    class="nav-icon fas fa-print"></i> Print</a>
                         </div>
                     </div>
+
                 </form>
             </div>
             <div class="table-responsive">
