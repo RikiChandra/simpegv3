@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lowongans', function (Blueprint $table) {
+        Schema::create('jam_kerjas', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_lowongan');
-            $table->string('jenis_pekerjaan');
-            $table->text('deskripsi');
-            $table->text('excerpt');
-            $table->date('batas_waktu_mulai');
-            $table->date('batas_waktu_selesai');
-            $table->softDeletes();
+            $table->enum('hari', ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu']);
+            $table->time('jam_masuk');
+            $table->time('jam_keluar');
+            $table->string('latitude');
+            $table->string('longitude');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lowongans');
+        Schema::dropIfExists('jam_kerjas');
     }
 };

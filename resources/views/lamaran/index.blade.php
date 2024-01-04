@@ -100,8 +100,7 @@
 
 
 @endsection
-
-@section('script')
+@push('scripts')
     <script>
         $(function() {
             // Inisialisasi DataTable untuk tabel dengan ID example1
@@ -155,4 +154,4 @@
             });
         });
     </script>
-@endsection
+@endpush

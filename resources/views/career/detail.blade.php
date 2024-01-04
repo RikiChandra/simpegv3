@@ -8,7 +8,15 @@
                         alt="" class="rounded float-start me-3 mr-2" width="100px" height="100px">
                     <div>
                         <h4 class="font-weight-bold">{{ $lowongans->nama_lowongan }}</h4>
+                        <p class="card-text">
+                            <i class="fas fa-calendar-alt"></i>
+                            {{ \Carbon\Carbon::parse($lowongans->batas_waktu_mulai)->isoFormat('D MMMM YYYY') }}
+                            -
+                            {{ \Carbon\Carbon::parse($lowongans->batas_waktu_selesai)->isoFormat('D MMMM YYYY') }}
+                        </p>
+                        <p class="card-text font-weight-bold">{{ $lowongans->jenis_pekerjaan }}</p>
                     </div>
+
                     <div class="ml-auto">
                         <a href="/career/{{ $lowongans->id }}/kirim-lamaran" class="btn btn-primary">Kirim Lamaran</a>
                     </div>

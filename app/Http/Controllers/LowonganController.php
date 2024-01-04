@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Lowongan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class LowonganController extends Controller
 {
@@ -21,10 +22,13 @@ class LowonganController extends Controller
 
     public function career()
     {
-        //
-        return view('career.index', [
-            'lowongans' => Lowongan::all(),
-        ]);
+        $now = Carbon::now();
+
+        $lowongans = Lowongan::whereDate('batas_waktu_mulai', '<=', $now)
+            ->whereDate('batas_waktu_selesai', '>=', $now)
+            ->get();
+
+        return view('career.index', ['lowongans' => $lowongans]);
     }
 
     public function detailCareer($id)
@@ -54,6 +58,8 @@ class LowonganController extends Controller
             'nama_lowongan' => 'required',
             'jenis_pekerjaan' => 'required',
             'deskripsi' => 'required',
+            'batas_waktu_mulai' => 'required',
+            'batas_waktu_selesai' => 'required',
         ]);
 
         $validatedData['excerpt'] = Str::limit(strip_tags($request->deskripsi), 200);
@@ -93,6 +99,8 @@ class LowonganController extends Controller
             'nama_lowongan' => 'required',
             'jenis_pekerjaan' => 'required',
             'deskripsi' => 'required',
+            'batas_waktu_mulai' => 'required',
+            'batas_waktu_selesai' => 'required',
         ]);
 
         $validatedData['excerpt'] = Str::limit(strip_tags($request->deskripsi), 200);

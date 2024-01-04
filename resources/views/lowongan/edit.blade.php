@@ -23,6 +23,24 @@
                             Intership</option>
                     </select>
                 </div>
+                <div class="form-group col-md-6">
+                    <label for="WaktuMulai">Waktu Mulai</label>
+                    <input type="date" class="form-control @error('batas_waktu_mulai') is-invalid @enderror"
+                        id="WaktuMulai" name="batas_waktu_mulai"
+                        value="{{ old('batas_waktu_mulai') ?? $lowongan->batas_waktu_mulai }}">
+                    @error('batas_waktu_mulai')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="WaktuSelesai">Waktu Selesai</label>
+                    <input type="date" class="form-control @error('batas_waktu_selesai') is-invalid @enderror"
+                        id="WaktuSelesai" name="batas_waktu_selesai"
+                        value="{{ old('batas_waktu_selesai') ?? $lowongan->batas_waktu_selesai }}">
+                    @error('batas_waktu_selesai')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
                 <div class="form-group col">
                     <label for="">Deskripsi Pekerjaan</label>
                     <textarea id="summernote" name="deskripsi">{{ old('deskripsi') ?? $lowongan->deskripsi }}</textarea>
@@ -37,11 +55,11 @@
         </form>
     </div>
 @endsection
-@section('script')
+@push('scripts')
     <script>
         $(function() {
             // Summernote
             $('#summernote').summernote()
         })
     </script>
-@endsection
+@endpush

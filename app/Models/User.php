@@ -23,6 +23,17 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function karyawan()
+    {
+        return $this->hasOne(Karyawan::class, 'users_id', 'id');
+    }
+
+    public function presensis()
+    {
+        return $this->hasMany(Presensi::class, 'users_id');
+    }
+
+
     /**
      * The attributes that should be hidden for serialization.
      *

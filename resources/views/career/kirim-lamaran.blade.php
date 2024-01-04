@@ -103,7 +103,7 @@
         </div>
     </div>
 @endsection
-@section('script')
+@push('scripts')
     <script>
         function updateFileName() {
             var input = document.getElementById('fileUpload');
@@ -125,4 +125,4 @@
             $('#summernote').summernote();
         });
     </script>
-@endsection
+@endpush

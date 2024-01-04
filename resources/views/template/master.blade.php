@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -87,10 +88,12 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-header">HRD</li>
                         <li class="nav-item">
                             <a href="{{ url('lowongan') }}"
                                 class="nav-link {{ request()->is('lowongan*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <i class="nav-icon fas fa-briefcase"></i>
+                                <!-- Change the icon to briefcase for Lowongan -->
                                 <p>
                                     Lowongan
                                 </p>
@@ -99,12 +102,67 @@
                         <li class="nav-item">
                             <a href="{{ url('lamaran') }}"
                                 class="nav-link {{ request()->is('lamaran*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <i class="nav-icon fas fa-file-alt"></i>
+                                <!-- Change the icon to file-alt for Lamaran -->
                                 <p>
                                     Lamaran
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ url('karyawan') }}"
+                                class="nav-link {{ request()->is('karyawan*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-user"></i>
+                                <!-- Change the icon to user for Data Karyawan -->
+                                <p>
+                                    Data Karyawan
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('jam-kerja') }}"
+                                class="nav-link {{ request()->is('jam-kerja*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-clock"></i>
+                                <!-- Keep the clock icon for Manajemen Jam Kerja -->
+                                <p>
+                                    Manajemen Jam Kerja
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ url('/presensi/data/karyawan') }}"
+                                class="nav-link {{ request()->is('presensi/data/karyawan') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-users"></i>
+                                <!-- Keep the users icon for Data Presensi Karyawan -->
+                                <p>
+                                    Data Presensi
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-header">KARYAWAN</li>
+                        <li class="nav-item">
+                            <a href="{{ url('presensi') }}"
+                                class="nav-link {{ request()->is('presensi') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-calendar-alt"></i>
+                                <!-- Keep the calendar-alt icon for Presensi -->
+                                <p>
+                                    Presensi
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-header">MASTER USER</li>
+                        <li class="nav-item">
+                            <a href="{{ url('') }}" class="nav-link {{ request()->is('') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-calendar-alt"></i>
+                                <!-- Keep the calendar-alt icon for Presensi -->
+                                <p>
+                                    Data Pengguna
+                                </p>
+                            </a>
+                        </li>
+
+
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -191,7 +249,7 @@
             })
         })
     </script>
-    @yield('script')
+    @stack('scripts')
 </body>
 
 </html>

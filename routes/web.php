@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\JamKerjaController;
+use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\LamaranController;
 use App\Http\Controllers\LowonganController;
+use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -50,6 +53,27 @@ Route::middleware('auth')->group(function () {
     //lamaran
     Route::get('/lamaran', [LamaranController::class, 'index'])->name('lamaran.index');
     Route::delete('/lamaran/{lamaran}/delete', [LamaranController::class, 'destroy'])->name('lamaran.destroy');
+
+    //karyawan
+    Route::get('/karyawan', [KaryawanController::class, 'index'])->name('karyawan.index');
+    Route::get('/karyawan/create', [KaryawanController::class, 'create'])->name('karyawan.create');
+    Route::get('/karyawan/{karyawan}/edit', [KaryawanController::class, 'edit'])->name('karyawan.edit');
+    Route::post('/karyawan', [KaryawanController::class, 'store'])->name('karyawan.store');
+    Route::patch('/karyawan/{karyawan}/update', [KaryawanController::class, 'update'])->name('karyawan.update');
+    Route::delete('/karyawan/{karyawan}/delete', [KaryawanController::class, 'destroy'])->name('karyawan.destroy');
+
+    //jam kerja
+    Route::get('/jam-kerja', [JamKerjaController::class, 'index'])->name('jam-kerja.index');
+    Route::get('/jam-kerja/{jamKerja}/edit', [JamKerjaController::class, 'edit'])->name('jam-kerja.edit');
+    Route::post('/jam-kerja', [JamKerjaController::class, 'store'])->name('jam-kerja.store');
+    Route::patch('/jam-kerja/{jamKerja}/update', [JamKerjaController::class, 'update'])->name('jam-kerja.update');
+    Route::delete('/jam-kerja/{jamKerja}/delete', [JamKerjaController::class, 'destroy'])->name('jam-kerja.destroy');
+
+    //presensi
+    Route::get('/presensi', [PresensiController::class, 'index'])->name('presensi.index');
+    Route::get('/presensi/data/karyawan', [PresensiController::class, 'dataPresensi'])->name('presensi.data');
+    Route::post('/presensi/store', [PresensiController::class, 'store'])->name('presensi.store');
+    Route::patch('/presensi/{presensi}/update', [PresensiController::class, 'update'])->name('presensi.update');
 });
 
 require __DIR__ . '/auth.php';

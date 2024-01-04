@@ -1,5 +1,5 @@
 @extends('template.master')
-@section('title', 'Data Lowongan')
+@section('title', 'Data Karyawan')
 @section('content')
     @if (session('success'))
         <div class="alert alert-success">
@@ -13,7 +13,7 @@
     <div class="card">
         <div class="card-header">
             <div class="d-flex justify-content-end">
-                <a href="{{ route('lowongan.create') }}" class="btn btn-primary">Tambah Lowongan</a>
+                <a href="{{ route('karyawan.create') }}" class="btn btn-primary">Tambah Data</a>
             </div>
         </div>
         <div class="card-body">
@@ -21,25 +21,30 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Nama Lowongan</th>
-                        <th>Jenis Pekerjaan</th>
-                        <th>Deskripsi Pekerjaan</th>
+                        <th>Foto</th>
+                        <th>Nama Karyawan</th>
+                        <th>Jabatan</th>
+                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($lowongans as $item)
+                    @foreach ($karyawans as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->nama_lowongan }}</td>
-                            <td>{{ $item->jenis_pekerjaan }}</td>
-                            <td>{{ $item->excerpt }}</td>
+                            <td>
+                                <img src="{{ asset('storage/' . $item->foto) }}" alt="{{ $item->nama }}" class="img-fluid"
+                                    width="100">
+                            </td>
+                            <td>{{ $item->nama }}</td>
+                            <td>{{ $item->jabatan }}</td>
+                            <td>{{ $item->status }}</td>
                             <td>
                                 <div class="d-flex">
-                                    <a href="/lowongan/{{ $item->id }}/edit" class="btn btn-warning mr-2">
+                                    <a href="{{ route('karyawan.edit', $item->id) }}" class="btn btn-warning mr-2">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form action="/lowongan/{{ $item->id }}/delete" method="post"
+                                    <form action="{{ route('karyawan.destroy', $item->id) }}" method="post"
                                         id="deleteForm-{{ $item->id }}">
                                         @csrf
                                         @method('delete')
