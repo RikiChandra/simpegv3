@@ -13,9 +13,20 @@ class CutiController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public $user;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->user = auth()->user();
+            return $next($request);
+        });
+    }
     public function index()
     {
         //
+        $this->authorize('HRD', $this->user);
         return view('cuti.index', [
             'cutis' => Cuti::with('karyawan')->get(),
             'karyawans' => Karyawan::all(),
@@ -109,6 +120,7 @@ class CutiController extends Controller
     public function update(Request $request, Cuti $cuti)
     {
         //
+        $this->authorize('HRD', $this->user);
         $cuti = Cuti::findOrFail($cuti->id);
 
         // Validasi input

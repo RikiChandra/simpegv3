@@ -10,9 +10,19 @@ class IzinController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public $user;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->user = auth()->user();
+            return $next($request);
+        });
+    }
     public function index()
     {
         //
+        $this->authorize('HRD', $this->user);
         return view('izin.index', [
             'izins' => Izin::all()
         ]);
@@ -74,6 +84,7 @@ class IzinController extends Controller
     public function update(Request $request, Izin $izin)
     {
         //
+        $this->authorize('HRD', $this->user);
         $validatedData = $request->validate([
             'status' => 'required',
             'keterangan' => 'required',

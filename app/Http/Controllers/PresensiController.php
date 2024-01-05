@@ -57,6 +57,7 @@ class PresensiController extends Controller
 
     public function cetak($bulan, Request $request)
     {
+        $this->authorize('HRD', $this->user);
         $namaBulan = date('F', mktime(0, 0, 0, $bulan, 1));
         $startOfMonth = date('Y-m-01', strtotime("$bulan/01"));
         $endOfMonth = date('Y-m-t', strtotime("$bulan/01"));
