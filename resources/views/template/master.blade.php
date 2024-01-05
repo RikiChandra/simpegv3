@@ -168,25 +168,23 @@
                                     </li>
                                 </ul>
                             </li>
-
-
-                            {{-- <li class="nav-item">
-                                <a href="{{ url('jenis-cuti') }}"
-                                    class="nav-link {{ request()->is('jenis-cuti') ? 'active' : '' }}">
+                            <li class="nav-item">
+                                <a href="{{ url('izin') }}"
+                                    class="nav-link {{ request()->is('izin') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-users"></i>
                                     <!-- Keep the users icon for Data Presensi Karyawan -->
                                     <p>
-                                        Data Jenis Cuti
+                                        Data izin karyawan
                                     </p>
                                 </a>
-                            </li> --}}
+                            </li>
                         @endif
                         <li class="nav-header">KARYAWAN</li>
                         <li class="nav-item">
                             <a href="{{ url('presensi') }}"
                                 class="nav-link {{ request()->is('presensi') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-calendar-alt"></i>
-                                <!-- Keep the calendar-alt icon for Presensi -->
+                                <!-- Use the clock icon for Presensi -->
                                 <p>
                                     Presensi
                                 </p>
@@ -195,14 +193,23 @@
                         <li class="nav-item">
                             <a href="{{ route('cuti.data') }}"
                                 class="nav-link {{ request()->is('data/cuti/karyawan') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-calendar-alt"></i>
-                                <!-- Keep the calendar-alt icon for Presensi -->
+                                <i class="nav-icon fas fa-bed"></i>
+                                <!-- Use the bed icon for Cuti -->
                                 <p>
                                     Cuti
                                 </p>
                             </a>
                         </li>
-
+                        <li class="nav-item">
+                            <a href="{{ route('izin.data') }}"
+                                class="nav-link {{ request()->is('izin/data/karyawan') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-bed"></i>
+                                <!-- Use the bed icon for Cuti -->
+                                <p>
+                                    Izin
+                                </p>
+                            </a>
+                        </li>
                         @if (Auth::user()->role == 'admin')
                             <li class="nav-header">MASTER USER</li>
                             <li class="nav-item">

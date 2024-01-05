@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\IzinController;
 use App\Http\Controllers\JamKerjaController;
 use App\Http\Controllers\JenisCutiController;
 use App\Http\Controllers\KaryawanController;
@@ -90,6 +91,13 @@ Route::middleware('auth')->group(function () {
     Route::patch('/cuti/{cuti}/update', [CutiController::class, 'update'])->name('cuti.update');
     Route::delete('/cuti/{cuti}/delete', [CutiController::class, 'destroy'])->name('cuti.destroy');
     Route::get('/data/cuti/karyawan', [CutiController::class, 'getDatabyUser'])->name('cuti.data');
+
+    //izin
+    Route::get('/izin', [IzinController::class, 'index'])->name('izin.index');
+    Route::get('/izin/data/karyawan', [IzinController::class, 'getDatabyUser'])->name('izin.data');
+    Route::post('/izin', [IzinController::class, 'store'])->name('izin.store');
+    Route::patch('/izin/{izin}/update', [IzinController::class, 'update'])->name('izin.update');
+    Route::delete('/izin/{izin}/delete', [IzinController::class, 'destroy'])->name('izin.destroy');
 });
 
 require __DIR__ . '/auth.php';

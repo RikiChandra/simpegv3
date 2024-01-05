@@ -84,7 +84,7 @@ class CutiController extends Controller
         $cuti->status = 'Diproses'; // Status awal
         $cuti->save();
 
-        return redirect()->route('cuti.index')->with('success', 'Pengajuan cuti berhasil disimpan.');
+        return redirect()->route('cuti.data')->with('success', 'Pengajuan cuti berhasil disimpan.');
     }
 
     /**
@@ -138,6 +138,6 @@ class CutiController extends Controller
         //
         Cuti::destroy($cuti->id);
 
-        return redirect()->route('cuti.index')->with('success', 'Pengajuan cuti berhasil dihapus.');
+        return redirect()->route('cuti.data')->with('success', 'Pengajuan cuti berhasil dihapus.');
     }
 }
