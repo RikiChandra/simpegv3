@@ -4,10 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\JamKerja;
 use App\Models\Presensi;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\App;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Illuminate\Support\Facades\Response;
+
 
 class PresensiController extends Controller
 {
@@ -48,6 +54,18 @@ class PresensiController extends Controller
             'presensis' => $presensis->get(),
         ]);
     }
+
+    public function cetak($bulan, Request $request)
+    {
+        $namaBulan = date('F', mktime(0, 0, 0, $bulan, 1));
+        $startOfMonth = date('Y-m-01', strtotime("$bulan/01"));
+        $endOfMonth = date('Y-m-t', strtotime("$bulan/01"));
+        $presensis = Presensi::whereBetween('tanggal', [$startOfMonth, $endOfMonth])->get();
+        $pdf = PDF::loadview('presensi.cetak', compact('presensis', 'namaBulan'))->setPaper('a3', 'landscape');
+        return $pdf->stream();
+    }
+
+
 
     /**
      * Show the form for creating a new resource.

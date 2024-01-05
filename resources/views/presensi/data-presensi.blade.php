@@ -4,7 +4,7 @@
     <div class="card">
         <div class="card-body">
             <div class="mb-3">
-                <form method="get" action="{{ route('presensi.data') }}">
+                <form method="get" action="{{ route('presensi.data') }}" id="presensiForm">
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label for="bulan">Bulan:</label>
@@ -33,12 +33,12 @@
                         </div>
                         <div class="col-md-1 mb-3">
                             <label>&nbsp;</label>
-                            <a href="" class="btn btn-success btn-block" target="_blank"><i
+                            <a href="#" id="printButton" class="btn btn-success btn-block" target="_blank"><i
                                     class="nav-icon fas fa-print"></i> Print</a>
                         </div>
                     </div>
-
                 </form>
+
             </div>
             <div class="table-responsive">
                 <table class="table table-bordered">
@@ -134,7 +134,7 @@
                                         </td> --}}
                                     @endfor
                                     <td>
-                                        {{ $totalWeight > 0 ? ($totalWeight / $lastDayOfMonth) * 100 : 0 }}%
+                                        {{ number_format($totalWeight > 0 ? round(($totalWeight / $lastDayOfMonth) * 100, 2) : 0, 2) }}%
                                     </td>
                                 </tr>
                             @endif
@@ -145,3 +145,23 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            // Attach a click event handler to the print button
+            $('#printButton').click(function(e) {
+                e.preventDefault();
+
+                // Get the selected month value
+                var selectedMonth = $('#bulan').val();
+
+                // Generate the print URL
+                var printUrl = "{{ route('presensi.cetak', ['bulan' => ':bulan']) }}";
+                printUrl = printUrl.replace(':bulan', selectedMonth);
+
+                // Open a new window for print preview
+                window.open(printUrl, '_blank');
+            });
+        });
+    </script>
+@endpush

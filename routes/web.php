@@ -74,6 +74,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/presensi/data/karyawan', [PresensiController::class, 'dataPresensi'])->name('presensi.data');
     Route::post('/presensi/store', [PresensiController::class, 'store'])->name('presensi.store');
     Route::patch('/presensi/{presensi}/update', [PresensiController::class, 'update'])->name('presensi.update');
+    Route::get('/presensi/cetak/{bulan}', [PresensiController::class, 'cetak'])->name('presensi.cetak');
 });
 
 require __DIR__ . '/auth.php';
