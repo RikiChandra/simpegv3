@@ -142,6 +142,44 @@
                                     </p>
                                 </a>
                             </li>
+                            <li
+                                class="nav-item {{ request()->is('jenis-cuti') || request()->is('cuti') ? 'menu-open' : '' }}">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-table"></i>
+                                    <p>
+                                        Data Cuti
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ url('jenis-cuti') }}"
+                                            class="nav-link {{ request()->is('jenis-cuti') ? 'active' : '' }}">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Jenis Cuti</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ url('cuti') }}"
+                                            class="nav-link {{ request()->is('cuti') ? 'active' : '' }}">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Data Cuti Karyawan</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+
+                            {{-- <li class="nav-item">
+                                <a href="{{ url('jenis-cuti') }}"
+                                    class="nav-link {{ request()->is('jenis-cuti') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <!-- Keep the users icon for Data Presensi Karyawan -->
+                                    <p>
+                                        Data Jenis Cuti
+                                    </p>
+                                </a>
+                            </li> --}}
                         @endif
                         <li class="nav-header">KARYAWAN</li>
                         <li class="nav-item">
@@ -154,6 +192,17 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('cuti.data') }}"
+                                class="nav-link {{ request()->is('data/cuti/karyawan') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-calendar-alt"></i>
+                                <!-- Keep the calendar-alt icon for Presensi -->
+                                <p>
+                                    Cuti
+                                </p>
+                            </a>
+                        </li>
+
                         @if (Auth::user()->role == 'admin')
                             <li class="nav-header">MASTER USER</li>
                             <li class="nav-item">

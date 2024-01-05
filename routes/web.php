@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\CutiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JamKerjaController;
+use App\Http\Controllers\JenisCutiController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\LamaranController;
 use App\Http\Controllers\LowonganController;
@@ -75,6 +77,19 @@ Route::middleware('auth')->group(function () {
     Route::post('/presensi/store', [PresensiController::class, 'store'])->name('presensi.store');
     Route::patch('/presensi/{presensi}/update', [PresensiController::class, 'update'])->name('presensi.update');
     Route::get('/presensi/cetak/{bulan}', [PresensiController::class, 'cetak'])->name('presensi.cetak');
+
+    //jenis cuti
+    Route::get('/jenis-cuti', [JenisCutiController::class, 'index'])->name('jenis-cuti.index');
+    Route::post('/jenis-cuti', [JenisCutiController::class, 'store'])->name('jenis-cuti.store');
+    Route::patch('/jenis-cuti/{jenisCuti}/update', [JenisCutiController::class, 'update'])->name('jenis-cuti.update');
+    Route::delete('/jenis-cuti/{jenisCuti}/delete', [JenisCutiController::class, 'destroy'])->name('jenis-cuti.destroy');
+
+    //cuti
+    Route::get('/cuti', [CutiController::class, 'index'])->name('cuti.index');
+    Route::post('/cuti', [CutiController::class, 'store'])->name('cuti.store');
+    Route::patch('/cuti/{cuti}/update', [CutiController::class, 'update'])->name('cuti.update');
+    Route::delete('/cuti/{cuti}/delete', [CutiController::class, 'destroy'])->name('cuti.destroy');
+    Route::get('/data/cuti/karyawan', [CutiController::class, 'getDatabyUser'])->name('cuti.data');
 });
 
 require __DIR__ . '/auth.php';
