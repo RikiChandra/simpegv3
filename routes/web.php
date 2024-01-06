@@ -8,6 +8,7 @@ use App\Http\Controllers\JenisCutiController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\LamaranController;
 use App\Http\Controllers\LowonganController;
+use App\Http\Controllers\PhkController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -98,6 +99,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/izin', [IzinController::class, 'store'])->name('izin.store');
     Route::patch('/izin/{izin}/update', [IzinController::class, 'update'])->name('izin.update');
     Route::delete('/izin/{izin}/delete', [IzinController::class, 'destroy'])->name('izin.destroy');
+
+    //phk
+    Route::get('/phk', [PhkController::class, 'index'])->name('phk.index');
+    Route::post('/phk', [PhkController::class, 'store'])->name('phk.store');
+    Route::patch('/phk/{phk}/update', [PhkController::class, 'update'])->name('phk.update');
+    Route::delete('/phk/{phk}/delete', [PhkController::class, 'destroy'])->name('phk.destroy');
 });
 
 require __DIR__ . '/auth.php';

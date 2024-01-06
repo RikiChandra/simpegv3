@@ -171,10 +171,21 @@
                             <li class="nav-item">
                                 <a href="{{ url('izin') }}"
                                     class="nav-link {{ request()->is('izin') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-users"></i>
-                                    <!-- Keep the users icon for Data Presensi Karyawan -->
+                                    <i class="nav-icon fas fa-bookmark"></i>
+                                    <!-- Change the icon to bookmark for Data Izin Karyawan -->
                                     <p>
-                                        Data izin karyawan
+                                        Data Izin Karyawan
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ url('phk') }}"
+                                    class="nav-link {{ request()->is('phk') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-ban"></i>
+                                    <!-- Change the icon to ban for Data PHK -->
+                                    <p>
+                                        Data PHK
                                     </p>
                                 </a>
                             </li>
@@ -193,8 +204,8 @@
                         <li class="nav-item">
                             <a href="{{ route('cuti.data') }}"
                                 class="nav-link {{ request()->is('data/cuti/karyawan') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-bed"></i>
-                                <!-- Use the bed icon for Cuti -->
+                                <i class="nav-icon fas fa-plane"></i>
+                                <!-- Use the plane icon for Cuti -->
                                 <p>
                                     Cuti
                                 </p>
@@ -203,13 +214,14 @@
                         <li class="nav-item">
                             <a href="{{ route('izin.data') }}"
                                 class="nav-link {{ request()->is('izin/data/karyawan') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-bed"></i>
-                                <!-- Use the bed icon for Cuti -->
+                                <i class="nav-icon fas fa-pencil-alt"></i>
+                                <!-- Use the pencil-alt icon for Izin -->
                                 <p>
                                     Izin
                                 </p>
                             </a>
                         </li>
+
                         @if (Auth::user()->role == 'admin')
                             <li class="nav-header">MASTER USER</li>
                             <li class="nav-item">
