@@ -19,6 +19,7 @@
                             <th>Alasan</th>
                             <th>Tanggal</th>
                             <th>Keterangan</th>
+                            <th>File</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -30,6 +31,16 @@
                                 <td>{{ $item->alasan }}</td>
                                 <td>{{ $item->tanggal }}</td>
                                 <td>{{ $item->keterangan }}</td>
+                                <td>
+                                    @if ($item->file == null)
+                                        <span class="badge badge-pill badge-danger">Tidak ada file</span>
+                                    @else
+                                        <a href="{{ asset('storage/' . $item->file) }}" class="btn btn-info"
+                                            target="_blank">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </a>
+                                    @endif
+                                </td>
                                 @if ($item->status == 'Diproses')
                                     <td>
                                         <div class="d-flex align-items-center">

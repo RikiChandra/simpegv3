@@ -39,7 +39,14 @@
                                 <td>{{ $item->tanggal }}</td>
                                 <td>{{ $item->keterangan }}</td>
                                 <td>
-                                    <a href="{{ asset('storage/' . $item->file) }}" target="_blank">Lihat</a>
+                                    @if ($item->file == null)
+                                        <span class="badge badge-pill badge-danger">Tidak ada file</span>
+                                    @else
+                                        <a href="{{ asset('storage/' . $item->file) }}" class="btn btn-info"
+                                            target="_blank">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </a>
+                                    @endif
                                 </td>
                                 <td>
                                     <div class="d-flex">

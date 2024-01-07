@@ -53,9 +53,13 @@ class IzinController extends Controller
         $validatedData = $request->validate([
             'tanggal' => 'required',
             'alasan' => 'required',
+            'file' => 'mimes:pdf|max:2048',
         ]);
 
         $validatedData['users_id'] = auth()->user()->id;
+
+        $validatedData['file'] = $request->file('file')->store('izin-pdf', 'public');
+
 
         Izin::create($validatedData);
 
