@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jam_kerjas', function (Blueprint $table) {
+        Schema::create('lokasi_kerjas', function (Blueprint $table) {
             $table->id();
-            $table->enum('hari', ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu']);
-            $table->time('jam_masuk');
-            $table->time('jam_keluar');
+            $table->string('nama_lokasi');
             $table->string('latitude');
             $table->string('longitude');
+            $table->time('jam_masuk');
+            $table->time('jam_keluar');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jam_kerjas');
+        Schema::dropIfExists('lokasi_kerjas');
     }
 };

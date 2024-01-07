@@ -30,11 +30,8 @@
                         <th>JUMLAH HARI</th>
                         <th>SISA CUTI</th>
                         <th>ALASAN</th>
-                        <th>STATUS</th>
                         <th>KETERANGAN</th>
-                        @if (Auth::user()->role == 'hrd')
-                            <th>Aksi</th> <!-- Kolom untuk tombol verifikasi -->
-                        @endif
+                        <th>STATUS</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,46 +45,36 @@
                             <td>{{ $item->jumlah_hari }} Hari</td>
                             <td>{{ $item->sisa_cuti }} Hari</td>
                             <td>{{ $item->alasan }}</td>
-                            @if ($item->status == 'Diproses')
-                                <td><span class="badge badge-pill badge-warning">Diproses</span></td>
-                            @elseif ($item->status == 'Diterima')
-                                <td><span class="badge badge-pill badge-success">Diterima</span></td>
-                            @else
-                                <td><span class="badge badge-pill badge-danger">Ditolak</span></td>
-                            @endif
-                            {{-- <td>{{ $item->status }}</td> --}}
                             <td>{{ $item->keterangan }}</td>
-                            @if (Auth::user()->role == 'hrd')
-                                @if ($item->status == 'Diproses')
-                                    <td class="row">
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-info" data-toggle="modal"
-                                                data-target="#modalEditData-{{ $item->id }}"
-                                                data-id="{{ $item->id }}">
-                                                <i class="fas fa-cogs"></i> Edit
-                                            </button>
+                            @if ($item->status == 'Diproses')
+                                <td>
+                                    <div class="d-flex align-items-center">
 
+                                        <button type="button" class="btn btn-success" data-toggle="modal"
+                                            data-target="#modalEditData-{{ $item->id }}"
+                                            data-id="{{ $item->id }}">
+                                            <i class="fas fa-check-circle"></i>
+                                        </button>
+                                        <div class="ml-2">
                                             <form id="deleteForm-{{ $item->id }}"
                                                 action="{{ route('cuti.destroy', ['cuti' => $item->id]) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" class="btn btn-danger delete-button"
                                                     data-id="{{ $item->id }}">
-                                                    <i class="fas fa-trash"></i> Delete
+                                                    <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>
                                         </div>
-                                    </td>
-                                @elseif ($item->status == 'Diterima')
-                                    <td>
-                                        <span class="badge text-success">Cuti anda diterima</span>
-                                    </td>
-                                @else
-                                    <td>
-                                        <span class="badge text-danger">Cuti anda ditolak</span>
-                                    </td>
-                                @endif
+
+                                    </div>
+                                </td>
+                            @elseif ($item->status == 'Diterima')
+                                <td><span class="badge badge-pill badge-success">Diterima</span></td>
+                            @else
+                                <td><span class="badge badge-pill badge-danger">Ditolak</span></td>
                             @endif
+
 
                         </tr>
                         <!-- Modal untuk input edit data -->

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\JamKerja;
+use App\Models\LokasiKerja;
 use Illuminate\Http\Request;
 
-class JamKerjaController extends Controller
+class LokasiKerjaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,8 +23,8 @@ class JamKerjaController extends Controller
     {
         //
         $this->authorize('HRD', $this->user);
-        return view('manajemen.index', [
-            'jamKerjas' => JamKerja::all(),
+        return view('lokasi_kerja.index', [
+            'lokasi_kerjas' => LokasiKerja::all()
         ]);
     }
 
@@ -44,22 +44,22 @@ class JamKerjaController extends Controller
         //
         $this->authorize('HRD', $this->user);
         $validatedData = $request->validate([
-            'hari' => 'required',
-            'jam_masuk' => 'required',
-            'jam_keluar' => 'required',
+            'nama_lokasi' => 'required',
             'latitude' => 'required',
             'longitude' => 'required',
+            'jam_masuk' => 'required',
+            'jam_keluar' => 'required',
         ]);
 
-        JamKerja::create($validatedData);
+        LokasiKerja::create($validatedData);
 
-        return redirect()->route('jam-kerja.index')->with('success', 'Jam Kerja berhasil ditambahkan');
+        return redirect()->route('lokasi.index')->with('success', 'Lokasi kerja berhasil ditambahkan');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(JamKerja $jamKerja)
+    public function show(LokasiKerja $lokasiKerja)
     {
         //
     }
@@ -67,44 +67,42 @@ class JamKerjaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(JamKerja $jamKerja)
+    public function edit(LokasiKerja $lokasiKerja)
     {
         //
-        $this->authorize('HRD', $this->user);
-        $jamKerja = JamKerja::find($jamKerja->id);
-        return response()->json($jamKerja);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, JamKerja $jamKerja)
+    public function update(Request $request, LokasiKerja $lokasiKerja)
     {
         //
         $this->authorize('HRD', $this->user);
         $validatedData = $request->validate([
-            'hari' => 'required',
-            'jam_masuk' => 'required',
-            'jam_keluar' => 'required',
+            'nama_lokasi' => 'required',
             'latitude' => 'required',
             'longitude' => 'required',
+            'jam_masuk' => 'required',
+            'jam_keluar' => 'required',
         ]);
 
-        JamKerja::where('id', $jamKerja->id)->update($validatedData);
+        // dd($request->all());
 
-        return redirect()->route('jam-kerja.index')->with('success', 'Jam Kerja berhasil diubah');
+        LokasiKerja::where('id', $lokasiKerja->id)->update($validatedData);
+
+        return redirect()->route('lokasi.index')->with('success', 'Lokasi kerja berhasil diubah');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(JamKerja $jamKerja)
+    public function destroy(LokasiKerja $lokasiKerja)
     {
         //
-
         $this->authorize('HRD', $this->user);
-        JamKerja::destroy($jamKerja->id);
+        LokasiKerja::destroy($lokasiKerja->id);
 
-        return redirect()->route('jam-kerja.index')->with('success', 'Jam Kerja berhasil dihapus');
+        return redirect()->route('lokasi.index')->with('success', 'Lokasi kerja berhasil dihapus');
     }
 }

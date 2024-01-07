@@ -10,6 +10,138 @@
             {{ session('error') }}
         </div>
     @endif
+    <style>
+        /* Presensi Modal Styles */
+        .modal-dialog {
+            max-width: 90%;
+        }
+
+        .modal-content {
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid #eaecef;
+            font-family: 'Arial', sans-serif;
+            padding: 15px;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .close {
+            font-size: 1.4rem;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .camera-container,
+        .map-container {
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+            height: 250px;
+            /* Adjust as needed */
+        }
+
+        .camera-container video,
+        .camera-container canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #cameraIcon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* Camera Icon styles */
+        }
+
+        .location-selector {
+            margin-bottom: 15px;
+        }
+
+        .modal-footer {
+            border-top: 1px solid #eaecef;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .button-group button {
+            margin: 5px;
+        }
+
+        .location-selector .form-select {
+            display: block;
+            width: 100%;
+            padding: 0.375rem 1.75rem 0.375rem 0.75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        #stopButton {
+            display: none;
+            /* Change to 'block' or 'inline-block' as per your JS logic */
+        }
+
+        #cameraIcon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            /* Adjust as needed */
+            height: 100%;
+            /* Adjust as needed */
+        }
+
+        #cameraIcon svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .modal-lg {
+                max-width: 100%;
+            }
+
+            .camera-container,
+            .map-container {
+                height: 200px;
+                /* Adjust for smaller screens */
+            }
+
+            .modal-footer .button-group {
+                flex-direction: column;
+            }
+        }
+
+        /* Additional custom styles as per your preference */
+    </style>
 
     <head>
         <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -49,7 +181,6 @@
                             <th>Jam Keluar</th>
                             <th>Tanggal</th>
                             <th>Status</th>
-                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,7 +190,18 @@
                                 <td><img src="{{ asset('storage/' . $item->photo) }}" alt="Foto" width="100px"></td>
                                 <td>{{ $item->user->karyawan->nama }}</td>
                                 <td>{{ $item->jam_masuk }}</td>
-                                <td>{{ $item->jam_keluar }}</td>
+                                @if ($item->jam_keluar == null)
+                                    <td>
+                                        <form action="{{ route('presensi.update', ['presensi' => $item->id]) }}"
+                                            method="post">
+                                            @csrf
+                                            @method('patch')
+                                            <button type="submit" class="btn btn-success btn-sm">Presensi Pulang</button>
+                                        </form>
+                                    </td>
+                                @else
+                                    <td>{{ $item->jam_keluar }}</td>
+                                @endif
                                 <td>{{ $item->tanggal }}</td>
                                 <td>
                                     @if ($item->status == 'Hadir')
@@ -68,18 +210,6 @@
                                         <span class="badge badge-warning">Terlambat</span>
                                     @else
                                         <span class="badge badge-danger">Tidak Masuk</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($item->jam_keluar == null)
-                                        <form action="{{ route('presensi.update', ['presensi' => $item->id]) }}"
-                                            method="post">
-                                            @csrf
-                                            @method('patch')
-                                            <button type="submit" class="btn btn-success btn-sm">Presensi Pulang</button>
-                                        </form>
-                                    @else
-                                        <span class="badge badge-secondary">Anda Sudah Presensi Hari Ini</span>
                                     @endif
                                 </td>
                             </tr>
@@ -97,7 +227,7 @@
 
     <!-- Presensi Modal -->
     <div class="modal fade" id="presensiModal" tabindex="-1" aria-labelledby="presensiModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="presensiModalLabel">Presensi Mandiri</h5>
@@ -105,91 +235,142 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <div class="container">
+                    <div class="location-selector mt-2">
+                        <label for="lokasiSelect" class="form-label">Pilih Lokasi</label>
+                        <select class="form-select select2" id="lokasiSelect">
+                            @foreach ($lokasiKerjas as $lokasiKerja)
+                                <option value="{{ $lokasiKerja->id }}" data-latitude="{{ $lokasiKerja->latitude }}"
+                                    data-longitude="{{ $lokasiKerja->longitude }}">{{ $lokasiKerja->nama_lokasi }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
                 <div class="modal-body">
                     <div class="row">
                         <!-- Camera Section -->
                         <div class="col-md-6">
-                            <div class="position-relative h-100">
-                                <video id="video" class="rounded-lg shadow-lg w-100 h-100 object-cover"
-                                    autoplay></video>
-                                <canvas id="canvas" class="position-absolute top-0 left-0 w-100 h-100"
-                                    style="display: none;"></canvas>
-                                <div id="cameraIcon"
-                                    class="position-absolute inset-0 d-flex align-items-center justify-content-center rounded-lg bg-gray-200">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-gray-500"
-                                        viewBox="0 0 20 20" fill="currentColor" id="cameraSVG">
+                            <div class="camera-container">
+                                <video id="video" autoplay></video>
+                                <canvas id="canvas" style="display: none;"></canvas>
+                                <div id="cameraIcon">
+                                    <svg width="150px" height="150px" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
                                         <path
-                                            d="M17 4h-3.586l-1-1H7.586l-1 1H3a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zm-7 11a3 3 0 100-6 3 3 0 000 6z" />
+                                            d="M3 3L6.00007 6.00007M21 21L19.8455 19.8221M9.74194 4.06811C9.83646 4.04279 9.93334 4.02428 10.0319 4.01299C10.1453 4 10.2683 4 10.5141 4H13.5327C13.7786 4 13.9015 4 14.015 4.01299C14.6068 4.08078 15.1375 4.40882 15.4628 4.90782C15.5252 5.00345 15.5802 5.11345 15.6901 5.33333C15.7451 5.44329 15.7726 5.49827 15.8037 5.54609C15.9664 5.79559 16.2318 5.95961 16.5277 5.9935C16.5844 6 16.6459 6 16.7688 6H17.8234C18.9435 6 19.5036 6 19.9314 6.21799C20.3077 6.40973 20.6137 6.71569 20.8055 7.09202C21.0234 7.51984 21.0234 8.0799 21.0234 9.2V15.3496M19.8455 19.8221C19.4278 20 18.8702 20 17.8234 20H6.22344C5.10333 20 4.54328 20 4.11546 19.782C3.73913 19.5903 3.43317 19.2843 3.24142 18.908C3.02344 18.4802 3.02344 17.9201 3.02344 16.8V9.2C3.02344 8.0799 3.02344 7.51984 3.24142 7.09202C3.43317 6.71569 3.73913 6.40973 4.11546 6.21799C4.51385 6.015 5.0269 6.00103 6.00007 6.00007M19.8455 19.8221L14.5619 14.5619M14.5619 14.5619C14.0349 15.4243 13.0847 16 12 16C10.3431 16 9 14.6569 9 13C9 11.9153 9.57566 10.9651 10.4381 10.4381M14.5619 14.5619L10.4381 10.4381M10.4381 10.4381L6.00007 6.00007"
+                                            stroke="#000000" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round" />
                                     </svg>
                                 </div>
+
+
                             </div>
                         </div>
                         <!-- Maps Section -->
                         <div class="col-md-6">
-                            <div id="report-map" class="rounded-md bg-gray-200 shadow-lg h-100"
-                                data-center="{{ $jam_kerja->latitude }}, {{ $jam_kerja->longitude }}" data-sources="">
-                                <!-- Map or any location information goes here -->
+                            <div id="report-map" class="map-container">
+                                <!-- Map content here -->
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <div class="mt-6 d-flex flex-column flex-sm-row justify-content-center gap-2">
-                        <button class="btn btn-indigo" id="startButton">Aktifkan Kamera</button>
-                        <button class="btn btn-danger d-none" id="stopButton">Matikan Kamera</button>
-                        <button class="btn btn-teal" id="absensiButton">Presensi Mandiri</button>
-                        <button onclick="getLocation()" class="btn btn-secondary">Dapatkan Lokasi Saya</button>
+                    <div class="button-group">
+                        <button class="btn btn-info" id="startButton">Aktifkan Kamera</button>
+                        <button class="btn btn-danger" id="stopButton">Matikan Kamera</button>
+                        <button class="btn btn-success" id="absensiButton">Presensi Mandiri</button>
+                        <button class="btn btn-secondary" onclick="getLocation()">Dapatkan Lokasi Saya</button>
                         <button class="btn btn-primary" id="takePhotoButton">Ambil Foto</button>
                         <button id="retakePhotoButton" style="display: none;" class="btn btn-warning">Retake</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="submitPresensi">Submit Presensi</button>
                 </div>
             </div>
         </div>
     </div>
+
+
 
 @endsection
 @push('scripts')
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDazrYoL6c9EtcTRcXBo_vJw9z3P7HiH84&libraries=places">
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var mapElement = document.getElementById('report-map');
+        // Inisialisasi variabel map sebagai variabel global
+        var map;
+        var markers = [];
 
-            var centerCoordinates = mapElement.dataset.center.split(',').map(function(coord) {
-                return parseFloat(coord);
+        $(document).ready(function() {
+            // Inisialisasi peta
+            function initMap() {
+                var centerLatLng = {
+                    lat: {{ $jam_kerja->latitude }},
+                    lng: {{ $jam_kerja->longitude }}
+                };
+                map = new google.maps.Map(document.getElementById('report-map'), {
+                    center: centerLatLng,
+                    zoom: 30
+                });
+
+                // Panggil fungsi updateMap() saat halaman dimuat
+                updateMap();
+            }
+
+            // Fungsi untuk menghapus marker yang ada di peta
+            function clearMarkers() {
+                for (var i = 0; i < markers.length; i++) {
+                    markers[i].setMap(null);
+                }
+                markers = [];
+            }
+
+            // Fungsi untuk menambahkan marker ke peta
+            function addMarker(location) {
+                var marker = new google.maps.Marker({
+                    position: location,
+                    map: map
+                });
+                markers.push(marker);
+            }
+
+            // Fungsi untuk mengatur peta berdasarkan pilihan lokasi
+            function updateMap() {
+                clearMarkers();
+                var selectedOption = $('#lokasiSelect option:selected');
+                var latitude = parseFloat(selectedOption.data('latitude'));
+                var longitude = parseFloat(selectedOption.data('longitude'));
+                var location = {
+                    lat: latitude,
+                    lng: longitude
+                };
+
+                map.setCenter(location);
+                addMarker(location);
+
+                // Tambahkan radius ke peta
+                var circle = new google.maps.Circle({
+                    strokeColor: 'blue',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: 'blue',
+                    fillOpacity: 0.2,
+                    map: map,
+                    center: location,
+                    radius: 10 // Sesuaikan dengan radius yang diinginkan dalam meter
+                });
+            }
+
+            // Event untuk mengatur peta ketika pilihan lokasi berubah
+            $('#lokasiSelect').change(function() {
+                updateMap();
             });
 
-            var mapOptions = {
-                zoom: 30,
-                center: new google.maps.LatLng(centerCoordinates[0], centerCoordinates[1]),
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-
-            // Membuat peta dengan inisialisasi di bagian ini
-            map = new google.maps.Map(mapElement, mapOptions);
-
-            // Membuat marker pusat
-            var centerMarker = new google.maps.Marker({
-                position: new google.maps.LatLng(centerCoordinates[0], centerCoordinates[1]),
-                map: map,
-                title: 'Pusat Data'
-            });
-
-            var circle = new google.maps.Circle({
-                strokeColor: 'blue',
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                fillColor: 'blue',
-                fillOpacity: 0.2,
-                map: map,
-                center: new google.maps.LatLng(centerCoordinates[0], centerCoordinates[1]),
-                radius: 10
-            });
+            // Panggil fungsi initMap() saat halaman dimuat
+            initMap();
         });
 
-        // Kemudian, fungsi getLocation dan showPosition seperti sebelumnya
+        // Fungsi untuk mendapatkan lokasi pengguna dan menampilkannya pada peta
         function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition);
@@ -198,6 +379,7 @@
             }
         }
 
+        // Fungsi untuk menampilkan lokasi pengguna pada peta
         function showPosition(position) {
             var latitude = position.coords.latitude;
             var longitude = position.coords.longitude;
@@ -211,6 +393,9 @@
             map.setCenter(userLocation);
         }
     </script>
+
+
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var video = document.getElementById('video');
@@ -399,23 +584,23 @@
             }
 
 
-            // Fungsi untuk mengecek apakah pengguna berada dalam radius absensi
-            function checkUserLocation(latitude, longitude) {
-                // Ganti koordinat pusat perusahaan sesuai dengan nilai yang diinginkan
-                const companyLatitude = {{ $jam_kerja->latitude }};
-                const companyLongitude = {{ $jam_kerja->longitude }};
-                const radius = 10; // Radius dalam meter
+            // // Fungsi untuk mengecek apakah pengguna berada dalam radius absensi
+            // function checkUserLocation(latitude, longitude) {
+            //     // Ganti koordinat pusat perusahaan sesuai dengan nilai yang diinginkan
+            //     const companyLatitude = {{ $jam_kerja->latitude }};
+            //     const companyLongitude = {{ $jam_kerja->longitude }};
+            //     const radius = 10; // Radius dalam meter
 
-                // Hitung jarak antara lokasi pengguna dengan pusat perusahaan
-                const distance = calculateDistance(latitude, longitude, companyLatitude, companyLongitude);
+            //     // Hitung jarak antara lokasi pengguna dengan pusat perusahaan
+            //     const distance = calculateDistance(latitude, longitude, companyLatitude, companyLongitude);
 
-                // Jika jarak kurang dari radius absensi, pengguna berada dalam area perusahaan
-                if (distance <= radius) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
+            //     // Jika jarak kurang dari radius absensi, pengguna berada dalam area perusahaan
+            //     if (distance <= radius) {
+            //         return true;
+            //     } else {
+            //         return false;
+            //     }
+            // }
 
             // Fungsi untuk menghitung jarak antara dua koordinat menggunakan formula haversine
             function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -437,6 +622,24 @@
                 const distance = earthRadius * c;
 
                 return distance;
+            }
+
+            // Fungsi untuk mengecek apakah pengguna berada dalam radius absensi
+            function checkUserLocation(latitude, longitude) {
+                // Ganti koordinat pusat perusahaan sesuai dengan nilai yang diinginkan
+                const companyLatitude = parseFloat($('#lokasiSelect option:selected').data('latitude'));
+                const companyLongitude = parseFloat($('#lokasiSelect option:selected').data('longitude'));
+                const radius = 10; // Radius dalam meter
+
+                // Hitung jarak antara lokasi pengguna dengan pusat perusahaan
+                const distance = calculateDistance(latitude, longitude, companyLatitude, companyLongitude);
+
+                // Jika jarak kurang dari radius absensi, pengguna berada dalam area perusahaan
+                if (distance <= radius) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
 
             // Fungsi untuk mengambil foto dan mengirim ke backend bersama data lokasi
@@ -479,6 +682,7 @@
             // Panggil fungsi takePhotoAndSend saat tombol absensi ditekan
             const absensiButton = document.getElementById('absensiButton'); // Ganti dengan ID tombol absensi
             absensiButton.addEventListener('click', takePhotoAndSend);
+
         });
     </script>
     <script>

@@ -3,10 +3,10 @@
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IzinController;
-use App\Http\Controllers\JamKerjaController;
 use App\Http\Controllers\JenisCutiController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\LamaranController;
+use App\Http\Controllers\LokasiKerjaController;
 use App\Http\Controllers\LowonganController;
 use App\Http\Controllers\PhkController;
 use App\Http\Controllers\PresensiController;
@@ -66,12 +66,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/karyawan/{karyawan}/update', [KaryawanController::class, 'update'])->name('karyawan.update');
     Route::delete('/karyawan/{karyawan}/delete', [KaryawanController::class, 'destroy'])->name('karyawan.destroy');
 
-    //jam kerja
-    Route::get('/jam-kerja', [JamKerjaController::class, 'index'])->name('jam-kerja.index');
-    Route::get('/jam-kerja/{jamKerja}/edit', [JamKerjaController::class, 'edit'])->name('jam-kerja.edit');
-    Route::post('/jam-kerja', [JamKerjaController::class, 'store'])->name('jam-kerja.store');
-    Route::patch('/jam-kerja/{jamKerja}/update', [JamKerjaController::class, 'update'])->name('jam-kerja.update');
-    Route::delete('/jam-kerja/{jamKerja}/delete', [JamKerjaController::class, 'destroy'])->name('jam-kerja.destroy');
 
     //presensi
     Route::get('/presensi', [PresensiController::class, 'index'])->name('presensi.index');
@@ -105,6 +99,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/phk', [PhkController::class, 'store'])->name('phk.store');
     Route::patch('/phk/{phk}/update', [PhkController::class, 'update'])->name('phk.update');
     Route::delete('/phk/{phk}/delete', [PhkController::class, 'destroy'])->name('phk.destroy');
+
+    //lokasi
+    Route::get('/lokasi', [LokasiKerjaController::class, 'index'])->name('lokasi.index');
+    Route::post('/lokasi', [LokasiKerjaController::class, 'store'])->name('lokasi.store');
+    Route::patch('/lokasi/{lokasiKerja}/update', [LokasiKerjaController::class, 'update'])->name('lokasi.update');
+    Route::delete('/lokasi/{lokasiKerja}/delete', [LokasiKerjaController::class, 'destroy'])->name('lokasi.destroy');
 });
 
 require __DIR__ . '/auth.php';

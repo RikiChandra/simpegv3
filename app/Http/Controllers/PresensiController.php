@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\JamKerja;
+use App\Models\LokasiKerja;
 use App\Models\Presensi;
 use App\Models\User;
 use Carbon\Carbon;
@@ -34,11 +34,13 @@ class PresensiController extends Controller
     {
         $user = Auth::user();
         $presensis = $user->presensis;
-        $jam_kerja = JamKerja::select('id', 'latitude', 'longitude')->first();
+        $lokasiKerjas = LokasiKerja::select('id', 'nama_lokasi', 'latitude', 'longitude')->get();
+        $jam_kerja = LokasiKerja::select('id', 'latitude', 'longitude')->first();
         $hasAttended = $presensis->where('tanggal', Carbon::now()->format('Y-m-d'))->isNotEmpty();
 
-        return view('presensi.index', compact('presensis', 'jam_kerja', 'hasAttended'));
+        return view('presensi.index', compact('presensis', 'lokasiKerjas', 'jam_kerja', 'hasAttended'));
     }
+
 
     public function dataPresensi(Request $request)
     {
@@ -145,7 +147,7 @@ class PresensiController extends Controller
 
     private function checkUserLocation($latitude, $longitude)
     {
-        $company = JamKerja::first();
+        $company = LokasiKerja::first();
         if ($company) {
             $companyLatitude = $company->latitude;
             $companyLongitude = $company->longitude;

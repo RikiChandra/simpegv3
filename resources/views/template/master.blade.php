@@ -122,12 +122,12 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url('jam-kerja') }}"
-                                    class="nav-link {{ request()->is('jam-kerja*') ? 'active' : '' }}">
+                                <a href="{{ url('lokasi') }}"
+                                    class="nav-link {{ request()->is('lokasi*') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-clock"></i>
                                     <!-- Keep the clock icon for Manajemen Jam Kerja -->
                                     <p>
-                                        Manajemen Jam Kerja
+                                        Lokasi dan jam kerja
                                     </p>
                                 </a>
                             </li>

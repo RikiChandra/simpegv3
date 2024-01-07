@@ -1,6 +1,61 @@
 @extends('template.master')
 @section('title', 'Data Presensi Karyawan')
 @section('content')
+    <style>
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: Arial, sans-serif;
+            /* Change to your preferred font */
+        }
+
+        .table-custom thead th {
+            background-color: #f8f9fa;
+            /* Light gray background */
+            color: #333;
+            /* Dark text for contrast */
+            padding: 8px;
+            border: 1px solid #dee2e6;
+            text-align: center;
+        }
+
+        .table-custom tbody td {
+            padding: 8px;
+            border: 1px solid #dee2e6;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table-custom .bg-success {
+            background-color: #28a745;
+            /* Green for presence */
+            color: white;
+        }
+
+        .table-custom .bg-warning {
+            background-color: #ffc107;
+            /* Yellow for late arrivals */
+            color: white;
+        }
+
+        .table-custom .bg-danger {
+            background-color: #dc3545;
+            /* Red for absence */
+            color: white;
+        }
+
+        .table-custom .align-middle {
+            vertical-align: middle;
+        }
+
+        /* Add media queries for responsiveness */
+        @media (max-width: 768px) {
+            .table-responsive {
+                overflow-x: auto;
+                /* Enable horizontal scrolling on small devices */
+            }
+        }
+    </style>
     <div class="card">
         <div class="card-body">
             <div class="mb-3">
@@ -41,7 +96,7 @@
 
             </div>
             <div class="table-responsive">
-                <table class="table table-bordered">
+                <table class="table table-custom">
                     <thead class="text-uppercase text-center font-weight-bold">
                         <tr>
                             <th rowspan="2" class="align-middle">Nama Pegawai</th>
@@ -124,14 +179,6 @@
                                                 -
                                             </td>
                                         @endif
-
-                                        {{-- <td class="text-center {{ $attendanceClass }}">
-                                            @if ($foundAttendance)
-                                                {{ $attendanceStatus }}
-                                            @elseif ($day < now()->day)
-                                                A
-                                            @endif
-                                        </td> --}}
                                     @endfor
                                     <td>
                                         {{ number_format($totalWeight > 0 ? round(($totalWeight / $lastDayOfMonth) * 100, 2) : 0, 2) }}%

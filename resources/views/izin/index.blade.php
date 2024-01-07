@@ -20,7 +20,6 @@
                             <th>Tanggal</th>
                             <th>Keterangan</th>
                             <th>Status</th>
-                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -32,41 +31,34 @@
                                 <td>{{ $item->tanggal }}</td>
                                 <td>{{ $item->keterangan }}</td>
                                 @if ($item->status == 'Diproses')
-                                    <td><span class="badge badge-pill badge-warning">Diproses</span></td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            @if (Auth::user()->role == 'hrd')
+                                                <button type="button" class="btn btn-success" data-toggle="modal"
+                                                    data-target="#modalEditData-{{ $item->id }}"
+                                                    data-id="{{ $item->id }}">
+                                                    <i class="fas fa-check-circle"></i>
+                                                    <!-- Ganti dengan ikon validasi sesuai kebutuhan -->
+                                                </button>
+                                            @endif
+                                            <div class="ml-2">
+                                                <form id="deleteForm-{{ $item->id }}"
+                                                    action="{{ route('izin.destroy', ['izin' => $item->id]) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" class="btn btn-danger delete-button"
+                                                        data-id="{{ $item->id }}">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </td>
                                 @elseif ($item->status == 'Diterima')
                                     <td><span class="badge badge-pill badge-success">Diterima</span></td>
                                 @else
                                     <td><span class="badge badge-pill badge-danger">Ditolak</span></td>
-                                @endif
-                                @if ($item->status == 'Diproses')
-                                    <td>
-                                        <div class="d-flex">
-                                            @if (Auth::user()->role == 'hrd')
-                                                <button type="button" class="btn btn-info mr-2" data-toggle="modal"
-                                                    data-target="#modalEditData-{{ $item->id }}"
-                                                    data-id="{{ $item->id }}">
-                                                    <i class="fas fa-cogs"></i>
-                                                </button>
-                                            @endif
-                                            <form id="deleteForm-{{ $item->id }}"
-                                                action="{{ route('izin.destroy', ['izin' => $item->id]) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="btn btn-danger delete-button"
-                                                    data-id="{{ $item->id }}">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                @elseif ($item->status == 'Diterima')
-                                    <td>
-                                        <span class="badge text-success">Izin anda diterima</span>
-                                    </td>
-                                @else
-                                    <td>
-                                        <span class="badge text-danger">Izin anda ditolak</span>
-                                    </td>
                                 @endif
 
                             </tr>
@@ -76,7 +68,7 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="modalTambahDataLabel">Edit Data Penilaian</h5>
+                                            <h5 class="modal-title" id="modalTambahDataLabel">Validasi Izin</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
