@@ -15,11 +15,32 @@ class KaryawanSeeder extends Seeder
     {
         //
         DB::table('karyawans')->insert([
-            'nama' => 'John Doe',
+            'nama' => 'Riki Chandra',
             'users_id' => 1,
             'alamat' => 'Jl. Contoh No. 123',
             'telepon' => '08123456789',
-            'email' => 'johndoe@example.com',
+            'email' => 'rikichandra37@gmail.com',
+            'foto' => 'foto-image/fm87KJO5jQzv6M0LcQwaSzGQqIxGUvrQCl2DXD28.png',
+            'jenis_kelamin' => 'L',
+            'tanggal_lahir' => '1990-05-15',
+            'tempat_lahir' => 'Jakarta',
+            'agama' => 'Islam',
+            'pendidikan' => 'Sarjana/S1',
+            'jabatan' => 'Manager',
+            'status' => 'aktif',
+            'no_ktp' => '1234567890',
+            'no_rekening' => '0987654321',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('karyawans')->insert([
+            'nama' => 'Chandra',
+            'users_id' => 2,
+            'alamat' => 'Jl. Contoh No. 123',
+            'telepon' => '08123456789',
+            'email' => 'rikichandra246@gmail.com',
+            'foto' => 'foto-image/fm87KJO5jQzv6M0LcQwaSzGQqIxGUvrQCl2DXD28.png',
             'jenis_kelamin' => 'L',
             'tanggal_lahir' => '1990-05-15',
             'tempat_lahir' => 'Jakarta',
