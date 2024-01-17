@@ -127,13 +127,23 @@
                             <li class="nav-item">
                                 <a href="{{ url('karyawan') }}"
                                     class="nav-link {{ request()->is('karyawan*') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-user"></i>
-                                    <!-- Change the icon to user for Data Karyawan -->
+                                    <i class="nav-icon fas fa-user"></i> <!-- Mengganti ikon dengan "fas fa-users" -->
                                     <p>
                                         Data Karyawan
                                     </p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ url('user') }}"
+                                    class="nav-link {{ request()->is('user*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-user-circle"></i>
+                                    <!-- Mengganti ikon dengan "fas fa-user-circle" -->
+                                    <p>
+                                        Data Pengguna
+                                    </p>
+                                </a>
+                            </li>
+
                             <li class="nav-item">
                                 <a href="{{ url('lokasi') }}"
                                     class="nav-link {{ request()->is('lokasi*') ? 'active' : '' }}">

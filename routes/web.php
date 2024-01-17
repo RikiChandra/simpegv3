@@ -11,6 +11,7 @@ use App\Http\Controllers\LowonganController;
 use App\Http\Controllers\PhkController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,6 +43,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    //user
+    Route::get('/user', [UserController::class, 'index'])->name('user.index');
+    Route::post('/user', [UserController::class, 'tambahPengguna'])->name('user.tambahPengguna');
+    Route::patch('/user/{user}/update', [UserController::class, 'update'])->name('user.update');
 
     //dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');

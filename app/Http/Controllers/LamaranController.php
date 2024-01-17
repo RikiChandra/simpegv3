@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Lamaran;
 use App\Models\Lowongan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class LamaranController extends Controller
@@ -61,6 +62,11 @@ class LamaranController extends Controller
 
         Lamaran::create($validatedData);
 
+        Mail::send('emails.konfirmasi-lamaran', [], function ($message) use ($request) {
+            $message->to($request->email)
+                ->subject('Konfirmasi Lamaran');
+        });
+
         return redirect()->route('career.index')->with('success', 'Lamaran berhasil dikirim');
     }
 
@@ -95,6 +101,12 @@ class LamaranController extends Controller
         ]);
 
         Lamaran::where('id', $lamaran->id)->update($validatedData);
+        $lamaran = Lamaran::find($lamaran->id);
+
+        Mail::send('emails.validasi-lamaran', ['lamaran' => $lamaran], function ($message) use ($lamaran) {
+            $message->to($lamaran->email)
+                ->subject('Konfirmasi Lamaran');
+        });
 
         return redirect()->route('lamaran.index')->with('success', 'Status lamaran berhasil diubah');
     }

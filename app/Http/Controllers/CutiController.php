@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Cuti;
 use App\Models\JenisCuti;
 use App\Models\Karyawan;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class CutiController extends Controller
 {
@@ -138,6 +140,12 @@ class CutiController extends Controller
         $cuti->status = $request->status;
         $cuti->keterangan = $request->keterangan;
         $cuti->save();
+
+        $user = User::find($cuti->users_id);
+        Mail::send('emails.validasi-cuti', ['cuti' => $cuti], function ($message) use ($user) {
+            $message->to($user->email, $user->username)
+                ->subject('Pemberitahuan Cuti');
+        });
 
         return redirect()->route('cuti.index')->with('success', 'Status cuti berhasil diperbarui.');
     }
