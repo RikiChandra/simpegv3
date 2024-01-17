@@ -39,24 +39,37 @@
                 </li>
             </ul>
 
+
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-                <form action="{{ route('logout') }}" method="post">
-                    @csrf
-                    <button type="submit" class="btn btn-danger">Logout</button>
-                </form>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ Auth::user()->karyawan->nama }}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a>
+                        <a class="dropdown-item" href="{{ route('profile.edit') }}">Change Password</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    </div>
+                </li>
             </ul>
+
         </nav>
+
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-white-primary">
             <!-- Brand Logo -->
-            <a href="{{ route('dashboard.index') }}" class="brand-link">
-                <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
-                    class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">Atap langit Indonesia</span>
-            </a>
+            <h4 class="mx-2 text-bold">Atap Langit Indonesia</h4>
 
             <!-- Sidebar -->
             <div class="sidebar">
@@ -265,7 +278,7 @@
         </div>
         <!-- /.content-wrapper -->
 
-        <footer class="main-footer">
+        {{-- <footer class="main-footer">
             <div class="float-right d-none d-sm-block">
                 <b>Version</b> 1.0.0
             </div>
@@ -274,7 +287,7 @@
                     document.write(new Date().getFullYear())
                 </script> <a href="">Atap Langit Indonesia</a>.
             </strong> All rights reserved.
-        </footer>
+        </footer> --}}
 
 
         <!-- Control Sidebar -->

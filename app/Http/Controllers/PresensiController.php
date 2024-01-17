@@ -88,7 +88,8 @@ class PresensiController extends Controller
         $photoPath = $this->savePhoto($photoBase64);
         $latitude = $request->input('latitude');
         $longitude = $request->input('longitude');
-        $isWithinRadius = $this->checkUserLocation($latitude, $longitude);
+        $locationId = $request->input('locationId');
+        $isWithinRadius = $this->checkUserLocation($latitude, $longitude, $locationId);
 
         $currentTime = \Carbon\Carbon::now('Asia/Jakarta');
         $status = $isWithinRadius ? 'Hadir' : 'Tidak Masuk'; // Default status
@@ -145,9 +146,9 @@ class PresensiController extends Controller
         return $distance;
     }
 
-    private function checkUserLocation($latitude, $longitude)
+    private function checkUserLocation($latitude, $longitude, $locationId)
     {
-        $company = LokasiKerja::first();
+        $company = LokasiKerja::find($locationId);
         if ($company) {
             $companyLatitude = $company->latitude;
             $companyLongitude = $company->longitude;

@@ -57,6 +57,7 @@ Route::middleware('auth')->group(function () {
     //lamaran
     Route::get('/lamaran', [LamaranController::class, 'index'])->name('lamaran.index');
     Route::delete('/lamaran/{lamaran}/delete', [LamaranController::class, 'destroy'])->name('lamaran.destroy');
+    Route::patch('/lamaran/{lamaran}/update', [LamaranController::class, 'update'])->name('lamaran.update');
 
     //karyawan
     Route::get('/karyawan', [KaryawanController::class, 'index'])->name('karyawan.index');

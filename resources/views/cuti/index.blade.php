@@ -49,12 +49,13 @@
                             @if ($item->status == 'Diproses')
                                 <td>
                                     <div class="d-flex align-items-center">
-
-                                        <button type="button" class="btn btn-success" data-toggle="modal"
-                                            data-target="#modalEditData-{{ $item->id }}"
-                                            data-id="{{ $item->id }}">
-                                            <i class="fas fa-check-circle"></i>
-                                        </button>
+                                        @if (Auth::user()->role == 'hrd')
+                                            <button type="button" class="btn btn-success" data-toggle="modal"
+                                                data-target="#modalEditData-{{ $item->id }}"
+                                                data-id="{{ $item->id }}">
+                                                <i class="fas fa-check-circle"></i>
+                                            </button>
+                                        @endif
                                         <div class="ml-2">
                                             <form id="deleteForm-{{ $item->id }}"
                                                 action="{{ route('cuti.destroy', ['cuti' => $item->id]) }}" method="POST">

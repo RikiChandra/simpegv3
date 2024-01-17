@@ -555,7 +555,7 @@
             // ... Bagian kode yang sudah ada sebelumnya ...
 
             // Fungsi untuk mengirim foto dan data lokasi ke backend
-            function sendPhotoAndLocationToBackend(photoData, latitude, longitude) {
+            function sendPhotoAndLocationToBackend(photoData, latitude, longitude, selectedLocationId) {
                 const token = $('meta[name="csrf-token"]').attr('content'); // Get CSRF token
 
                 $.ajax({
@@ -568,7 +568,8 @@
                     data: JSON.stringify({
                         photo: photoData,
                         latitude: latitude,
-                        longitude: longitude
+                        longitude: longitude,
+                        locationId: selectedLocationId
                     }),
                     success: function(data) {
                         console.log(data); // Display server response, modify as needed
@@ -658,6 +659,7 @@
                 context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
                 const photoData = canvas.toDataURL('image/jpeg');
+                const selectedLocationId = $('#lokasiSelect').val();
 
                 // Ambil lokasi pengguna
                 if (navigator.geolocation) {
@@ -669,7 +671,8 @@
 
                         if (isWithinRadius) {
                             // Jika pengguna berada dalam radius perusahaan, kirim foto dan lokasi ke backend
-                            sendPhotoAndLocationToBackend(photoData, latitude, longitude);
+                            sendPhotoAndLocationToBackend(photoData, latitude, longitude,
+                                selectedLocationId);
                         } else {
                             alert('Anda tidak berada di area perusahaan');
                         }

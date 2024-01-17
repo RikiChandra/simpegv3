@@ -22,7 +22,6 @@
                         <th>No Telpon</th>
                         <th>Portofolio</th>
                         <th>Status</th>
-                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,39 +42,79 @@
                             @elseif($item->status == 'Ditolak')
                                 <td><span class="badge badge-danger">{{ $item->status }}</span></td>
                             @else
-                                <td><span class="badge badge-warning">{{ $item->status }}</span></td>
-                            @endif
-                            <td>
-                                <div class="dropdown">
-                                    <button class="btn btn-secondary" type="button" id="dropdownMenuButton"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Proses</a>
-                                        <div role="separator" class="dropdown-divider"></div>
-                                        <!-- Modal Show -->
-                                        <button type="button" class="dropdown-item view-pdf-button"
-                                            data-url="{{ $item->resume }}" data-toggle="modal"
-                                            data-target="#showModal{{ $item->id }}">Resume</button>
-
-                                        <!-- Modal Hapus -->
-                                        <form action="/lamaran/{{ $item->id }}/delete" method="post"
-                                            id="deleteForm-{{ $item->id }}">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="button" class="dropdown-item delete-button"
-                                                data-id="{{ $item->id }}" data-toggle="modal"
-                                                data-target="#deleteModal{{ $item->id }}">
-                                                Delete
+                                <td>
+                                    <div class="d-flex">
+                                        <span class="badge badge-warning my-2 mr-2">{{ $item->status }}</span>
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary" type="button" id="dropdownMenuButton"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v"></i>
                                             </button>
+                                            <div class="dropdown-menu dropdown-menu-right"
+                                                aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="#" data-toggle="modal"
+                                                    data-target="#modalEditData-{{ $item->id }}"
+                                                    data-id="{{ $item->id }}">Proses</a>
+                                                <div role="separator" class="dropdown-divider"></div>
+                                                <!-- Modal Show -->
+                                                <button type="button" class="dropdown-item view-pdf-button"
+                                                    data-url="{{ $item->resume }}" data-toggle="modal"
+                                                    data-target="#showModal{{ $item->id }}">Resume</button>
+
+                                                <!-- Modal Hapus -->
+                                                <form action="/lamaran/{{ $item->id }}/delete" method="post"
+                                                    id="deleteForm-{{ $item->id }}">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="button" class="dropdown-item delete-button"
+                                                        data-id="{{ $item->id }}" data-toggle="modal"
+                                                        data-target="#deleteModal{{ $item->id }}">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </td>
+                            @endif
+                        </tr>
+                        <!-- Modal untuk input edit data -->
+                        <div class="modal fade" id="modalEditData-{{ $item->id }}" tabindex="-1" role="dialog"
+                            aria-labelledby="modalTambahDataLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalTambahDataLabel">Validasi Lamaran</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Form untuk input data baru -->
+                                        <form id="formEditData"
+                                            action="{{ route('lamaran.update', ['lamaran' => $item->id]) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('PATCH')
+                                            <div class="form-group">
+                                                <label for="status">Status</label>
+                                                <select class="form-control select2" id="status" name="status">
+                                                    <option value="Diproses">Diproses</option>
+                                                    <option value="Diterima">Diterima</option>
+                                                    <option value="Ditolak">Ditolak</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="keterangan">Keterangan</label>
+                                                <textarea class="form-control" id="keterangan" name="keterangan" rows="3"></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-warning">Update</button>
                                         </form>
                                     </div>
                                 </div>
-
-                            </td>
-
-                        </tr>
+                            </div>
+                        </div>
                     @endforeach
                 </tbody>
             </table>

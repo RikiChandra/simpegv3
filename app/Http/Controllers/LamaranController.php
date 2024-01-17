@@ -86,6 +86,17 @@ class LamaranController extends Controller
     public function update(Request $request, Lamaran $lamaran)
     {
         //
+
+        $this->authorize('HRD', $this->user);
+
+        $validatedData = $request->validate([
+            'status' => 'required',
+            'keterangan' => 'required',
+        ]);
+
+        Lamaran::where('id', $lamaran->id)->update($validatedData);
+
+        return redirect()->route('lamaran.index')->with('success', 'Status lamaran berhasil diubah');
     }
 
     /**

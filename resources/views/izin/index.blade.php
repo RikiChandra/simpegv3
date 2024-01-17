@@ -128,11 +128,25 @@
                 </div>
                 <div class="modal-body">
                     <!-- Form untuk input data baru -->
-                    <form id="formTambahData" action="{{ route('izin.store') }}" method="POST">
+                    <form id="formTambahData" action="{{ route('izin.store') }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label for="nama">Alasan</label>
                             <textarea class="form-control" id="keterangan" name="alasan" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputFile">File input</label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="exampleInputFile"
+                                        name="file">
+                                    <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">Upload</span>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="nilai">Tanggal</label>
