@@ -26,7 +26,9 @@ class DashboardController extends Controller
         $pegawaiTidakMasuk = max($pegawai - $hadir, 0);
         $cuti = Cuti::where('status', 'Diproses')->count();
         $Sedangcuti = Cuti::where('status', 'Diterima')->whereDate('tanggal_mulai', '<=', $today)->whereDate('tanggal_selesai', '>=', $today)->count();
-        $izin = Izin::where('tanggal', $today)->count();
+        $izin = Izin::where('tanggal', $today)
+            ->where('status', 'Diterima')
+            ->count();
         $pelamar = Lamaran::where('status', 'Diproses')->count();
         $lowongan = Lowongan::where('batas_waktu_selesai', '>=', $today)->count();
 

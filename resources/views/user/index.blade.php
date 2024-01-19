@@ -27,6 +27,7 @@
                             <th>Username</th>
                             <th>Email</th>
                             <th>Hak Akses</th>
+                            <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -37,6 +38,11 @@
                                 <td>{{ $item->username }}</td>
                                 <td>{{ $item->email }}</td>
                                 <td>{{ $item->role }}</td>
+                                @if ($item->is_active == 1)
+                                    <td><span class="badge badge-pill badge-success">Aktif</span></td>
+                                @else
+                                    <td><span class="badge badge-pill badge-danger">Tidak Aktif</span></td>
+                                @endif
                                 <td>
                                     <div class="d-flex">
                                         <button type="button" class="btn btn-warning mr-2" data-toggle="modal"
@@ -77,15 +83,28 @@
                                                 <div class="form-group">
                                                     <label for="status">Hak Akses</label>
                                                     <select class="form-control" id="status" name="role">
-                                                        <option value="admin"
-                                                            {{ (old('role') ?? $item->role) == 'admin' ? 'selected' : '' }}>
-                                                            Admin</option>
+                                                        <option value="direktur"
+                                                            {{ (old('role') ?? $item->role) == 'direktur' ? 'selected' : '' }}>
+                                                            Direktur</option>
                                                         <option value="karyawan"
                                                             {{ (old('role') ?? $item->role) == 'karyawan' ? 'selected' : '' }}>
                                                             Karyawan</option>
                                                         <option value="hrd"
                                                             {{ (old('role') ?? $item->role) == 'hrd' ? 'selected' : '' }}>
                                                             HRD</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="status">Is Active</label>
+                                                    <select class="form-control" id="status" name="is_active">
+                                                        <option value="1"
+                                                            {{ (old('is_active') ?? $item->is_active) == 1 ? 'selected' : '' }}>
+                                                            Aktif
+                                                        </option>
+                                                        <option value="0"
+                                                            {{ (old('is_active') ?? $item->is_active) == 0 ? 'selected' : '' }}>
+                                                            Tidak Aktif
+                                                        </option>
                                                     </select>
                                                 </div>
                                                 <button type="submit" class="btn btn-warning">Update</button>
@@ -126,7 +145,7 @@
                         <div class="form-group">
                             <label for="status">Hak Akses</label>
                             <select class="form-control" id="status" name="role">
-                                <option value="admin">Admin</option>
+                                <option value="direktur">Direktur</option>
                                 <option value="karyawan">Karyawan</option>
                                 <option value="hrd">HRD</option>
                             </select>

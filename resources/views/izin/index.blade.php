@@ -43,6 +43,7 @@
                                 </td>
                                 @if ($item->status == 'Diproses')
                                     <td>
+                                        <span class="badge badge-pill badge-warning mb-2">Diproses</span>
                                         <div class="d-flex align-items-center">
                                             @if (Auth::user()->role == 'hrd')
                                                 <button type="button" class="btn btn-success" data-toggle="modal"
@@ -52,6 +53,7 @@
                                                     <!-- Ganti dengan ikon validasi sesuai kebutuhan -->
                                                 </button>
                                             @endif
+
                                             <div class="ml-2">
                                                 <form id="deleteForm-{{ $item->id }}"
                                                     action="{{ route('izin.destroy', ['izin' => $item->id]) }}"
@@ -64,6 +66,7 @@
                                                     </button>
                                                 </form>
                                             </div>
+
                                         </div>
                                     </td>
                                 @elseif ($item->status == 'Diterima')

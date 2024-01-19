@@ -59,6 +59,7 @@ class UserController extends Controller
         $this->authorize('HRD', $this->user);
         $validatedData = $request->validate([
             'role' => 'required',
+            'is_active' => 'required',
         ]);
 
         User::where('id', $user->id)->update($validatedData);
