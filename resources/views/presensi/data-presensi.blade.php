@@ -95,6 +95,7 @@
                 </form>
 
             </div>
+            <span>Keterangan: H : Hadir, T : Terlambat, I : Izin, C : Cuti, A : Tidak Masuk</span>
             <div class="table-responsive">
                 <table class="table table-custom">
                     <thead class="text-uppercase text-center font-weight-bold">

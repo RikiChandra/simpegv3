@@ -10,14 +10,14 @@ class UserPolicy
      * Create a new policy instance.
      */
 
-    public function Admin(User $user)
+    public function Direktur(User $user)
     {
-        return $user->role === 'admin';
+        return $user->role === 'direktur';
     }
 
     public function HRD(User $user)
     {
-        return $user->role === 'hrd';
+        return $user->role === 'hrd' || $user->role === 'direktur';
     }
 
     public function Karyawan(User $user)

@@ -101,7 +101,7 @@ class IzinController extends Controller
         Izin::where('id', $izin->id)->update($validatedData);
         if ($request->status == 'Diterima') {
             Presensi::create([
-                'users_id' => auth()->user()->id,
+                'users_id' => $izin->users_id,
                 'status' => 'Izin',
                 'tanggal' => now('Asia/Jakarta')->format('Y-m-d'),
                 'jam_masuk' => '00:00:00',

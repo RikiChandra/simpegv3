@@ -246,15 +246,15 @@
                             </a>
                         </li>
 
-                        @if (Auth::user()->role == 'admin')
-                            <li class="nav-header">MASTER USER</li>
+                        @if (Auth::user()->role == 'direktur')
+                            <li class="nav-header">Laporan</li>
                             <li class="nav-item">
-                                <a href="{{ url('') }}"
-                                    class="nav-link {{ request()->is('') ? 'active' : '' }}">
+                                <a href="{{ url('/presensi/data/karyawan') }}"
+                                    class="nav-link {{ request()->is('/presensi/data/karyawan') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-calendar-alt"></i>
                                     <!-- Keep the calendar-alt icon for Presensi -->
                                     <p>
-                                        Data Pengguna
+                                        Laporan Data Presensi
                                     </p>
                                 </a>
                             </li>
