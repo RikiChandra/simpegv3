@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Izin;
+use App\Models\Presensi;
 use Illuminate\Http\Request;
 
 class IzinController extends Controller
@@ -58,7 +59,9 @@ class IzinController extends Controller
 
         $validatedData['users_id'] = auth()->user()->id;
 
-        $validatedData['file'] = $request->file('file')->store('izin-pdf', 'public');
+        if ($request->hasFile('file')) {
+            $validatedData['file'] = $request->file('file')->store('izin-pdf', 'public');
+        }
 
 
         Izin::create($validatedData);
@@ -94,7 +97,17 @@ class IzinController extends Controller
             'keterangan' => 'required',
         ]);
 
+
         Izin::where('id', $izin->id)->update($validatedData);
+        if ($request->status == 'Diterima') {
+            Presensi::create([
+                'users_id' => auth()->user()->id,
+                'status' => 'Izin',
+                'tanggal' => now('Asia/Jakarta')->format('Y-m-d'),
+                'jam_masuk' => '00:00:00',
+                'jam_keluar' => '00:00:00',
+            ]);
+        }
 
         return redirect()->route('izin.index')->with('success', 'Izin berhasil diupdate');
     }

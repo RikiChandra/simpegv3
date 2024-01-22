@@ -99,7 +99,7 @@
                 <table class="table table-custom">
                     <thead class="text-uppercase text-center font-weight-bold">
                         <tr>
-                            <th rowspan="2" class="align-middle">Nama Pegawai</th>
+                            <th rowspan="2" class="align-middle">Nama Karyawan</th>
                             <th colspan="31" class="text-center">
                                 <div class="d-flex justify-content-center space-2 items-center">
                                     <div>
@@ -155,6 +155,16 @@
                                                         $attendanceClass = 'bg-warning text-white';
                                                         $attendanceStatus = 'T';
                                                         $totalWeight += 0.7;
+                                                        break;
+                                                    case 'Izin':
+                                                        $attendanceClass = 'bg-info text-white';
+                                                        $attendanceStatus = 'I';
+                                                        $totalWeight += 0.5;
+                                                        break;
+                                                    case 'Cuti':
+                                                        $attendanceClass = 'bg-orange text-white';
+                                                        $attendanceStatus = 'C';
+                                                        $totalWeight += 0.8;
                                                         break;
                                                     case 'Tidak Masuk':
                                                         $attendanceClass = 'bg-danger text-white';

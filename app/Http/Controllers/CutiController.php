@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cuti;
 use App\Models\JenisCuti;
 use App\Models\Karyawan;
+use App\Models\Presensi;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -140,6 +141,28 @@ class CutiController extends Controller
         $cuti->status = $request->status;
         $cuti->keterangan = $request->keterangan;
         $cuti->save();
+
+        if ($request->status == 'Diterima') {
+            // Loop through the date range and create Presensi record for each date
+            $tanggalMulai = new \DateTime($cuti->tanggal_mulai);
+            $tanggalSelesai = new \DateTime($cuti->tanggal_selesai);
+
+            while ($tanggalMulai <= $tanggalSelesai) {
+                $presensiDate = $tanggalMulai->format('Y-m-d');
+
+                // Create Presensi record for each date
+                Presensi::create([
+                    'users_id' => $cuti->users_id,
+                    'status' => 'Cuti',
+                    'tanggal' => $presensiDate,
+                    'jam_masuk' => '00:00:00',
+                    'jam_keluar' => '00:00:00',
+                ]);
+
+                // Move to the next day
+                $tanggalMulai->add(new \DateInterval('P1D'));
+            }
+        }
 
         $user = User::find($cuti->users_id);
         Mail::send('emails.validasi-cuti', ['cuti' => $cuti], function ($message) use ($user) {

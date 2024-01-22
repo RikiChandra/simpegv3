@@ -55,6 +55,14 @@
             background-color: #dc3545 !important;
         }
 
+        .bg-info {
+            background-color: #17a2b8 !important;
+        }
+
+        .bg-orange {
+            background-color: #fd7e14 !important;
+        }
+
         .text-white {
             color: #fff !important;
         }
@@ -128,6 +136,16 @@
                                                 $attendanceClass = 'bg-warning text-white';
                                                 $attendanceStatus = 'T';
                                                 $totalWeight += 0.7;
+                                                break;
+                                            case 'Izin':
+                                                $attendanceClass = 'bg-info text-white';
+                                                $attendanceStatus = 'I';
+                                                $totalWeight += 0.5;
+                                                break;
+                                            case 'Cuti':
+                                                $attendanceClass = 'bg-orange text-white';
+                                                $attendanceStatus = 'C';
+                                                $totalWeight += 0.8;
                                                 break;
                                             case 'Tidak Masuk':
                                                 $attendanceClass = 'bg-danger text-white';

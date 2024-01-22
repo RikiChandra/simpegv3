@@ -208,6 +208,10 @@
                                         <span class="badge badge-success">Hadir</span>
                                     @elseif($item->status == 'Terlambat')
                                         <span class="badge badge-warning">Terlambat</span>
+                                    @elseif($item->status == 'Izin')
+                                        <span class="badge badge-info">Izin</span>
+                                    @elseif($item->status == 'Cuti')
+                                        <span class="badge badge-warning">Cuti</span>
                                     @else
                                         <span class="badge badge-danger">Tidak Masuk</span>
                                     @endif

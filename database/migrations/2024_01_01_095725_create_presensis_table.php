@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('users_id');
             $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('photo')->nullable();
-            $table->enum('status', ['Hadir', 'Terlambat', 'Tidak Masuk'])->default('Hadir');
+            $table->enum('status', ['Hadir', 'Terlambat', 'Tidak Masuk', 'Izin', 'Cuti'])->default('Hadir');
             $table->time('jam_masuk')->nullable();
             $table->time('jam_keluar')->nullable();
             $table->date('tanggal')->nullable();
