@@ -153,13 +153,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Mission Point 3 -->
-                        <!-- ... -->
-                        <!-- Mission Point 4 -->
-                        <!-- ... -->
-                        <!-- Mission Point 5 -->
-                        <!-- ... -->
-                        <!-- Mission Point 6 -->
                         <div class="col-md-4 mb-4">
                             <div class="card h-100 shadow-sm">
                                 <div class="card-body">

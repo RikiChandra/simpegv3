@@ -28,22 +28,42 @@ class CutiController extends Controller
     }
     public function index()
     {
-        //
+        $karyawan = Karyawan::where('users_id', Auth::user()->id)->first();
+
+        $jenisCutis = JenisCuti::query();
+
+        if ($karyawan->jenis_kelamin === 'L') {
+            $jenisCutis->whereNotIn('jenis_cuti', ['Cuti Melahirkan', 'Cuti Haid', 'Cuti Keguguran']);
+        }
+
+        $jenisCutis = $jenisCutis->get();
+
         $this->authorize('HRD', $this->user);
+
         return view('cuti.index', [
             'cutis' => Cuti::with('karyawan')->get(),
             'karyawans' => Karyawan::all(),
-            'jenis_cutis' => JenisCuti::all()
+            'jenis_cutis' => $jenisCutis
         ]);
     }
+
+
 
     public function getDatabyUser()
     {
         //
+        $karyawan = Karyawan::where('users_id', Auth::user()->id)->first();
+        $jenisCutis = JenisCuti::query();
+
+        if ($karyawan->jenis_kelamin === 'L') {
+            $jenisCutis->whereNotIn('jenis_cuti', ['Cuti Melahirkan', 'Cuti Haid', 'Cuti Keguguran']);
+        }
+
+        $jenisCutis = $jenisCutis->get();
         return view('cuti.index', [
             'cutis' => Cuti::with('karyawan')->where('users_id', Auth::user()->id)->get(),
             'karyawans' => Karyawan::all(),
-            'jenis_cutis' => JenisCuti::all()
+            'jenis_cutis' => $jenisCutis
         ]);
     }
 
