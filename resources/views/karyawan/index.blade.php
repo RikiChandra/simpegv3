@@ -44,7 +44,7 @@
                                     <a href="{{ route('karyawan.edit', $item->id) }}" class="btn btn-warning mr-2">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form action="{{ route('karyawan.destroy', $item->id) }}" method="post"
+                                    {{-- <form action="{{ route('karyawan.destroy', $item->id) }}" method="post"
                                         id="deleteForm-{{ $item->id }}">
                                         @csrf
                                         @method('delete')
@@ -52,7 +52,7 @@
                                             data-id="{{ $item->id }}">
                                             <i class="fas fa-trash"></i>
                                         </button>
-                                    </form>
+                                    </form> --}}
                                 </div>
                             </td>
                         </tr>

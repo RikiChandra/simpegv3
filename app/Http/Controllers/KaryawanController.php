@@ -54,6 +54,8 @@ class KaryawanController extends Controller
             'pendidikan' => 'required',
             'jabatan' => 'required',
             'status' => 'required',
+            'nik_pegawai' => 'required',
+            'bank' => 'required',
             'no_ktp' => 'required',
             'no_rekening' => 'required',
         ]);
@@ -91,6 +93,8 @@ class KaryawanController extends Controller
             'pendidikan' => 'required',
             'jabatan' => 'required',
             'status' => 'required',
+            'nik_pegawai' => 'required',
+            'bank' => 'required',
             'no_ktp' => 'required',
             'no_rekening' => 'required',
         ]);

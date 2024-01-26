@@ -193,12 +193,16 @@
                 <div class="form-group">
                     <label for="NoKTP">Nomor KTP</label>
                     <input type="text" class="form-control" id="NoKTP" placeholder="Masukkan Nomor KTP"
-                        name="no_ktp" value="{{ old('no_ktp') ?? $karyawan->no_ktp }}">
+                        name="no_ktp" value="{{ old('no_ktp') ?? $karyawan->no_ktp }}" maxlength="16">
                     @error('no_ktp')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
-
+                <div class="form-group">
+                    <label for="NoNik">NIK Karyawan</label>
+                    <input type="text" class="form-control" id="NoNik" placeholder="Masukkan Nomor NIK Pegawai"
+                        name="nik_pegawai" value="{{ old('nik_pegawai') ?? $karyawan->nik_pegawai }}">
+                </div>
                 <!-- Nomor Rekening -->
                 <div class="form-group">
                     <label for="NoRekening">Nomor Rekening</label>
@@ -207,6 +211,17 @@
                     @error('no_rekening')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
+                </div>
+                <div class="form-group">
+                    <label for="bank">Bank</label>
+                    <select class="form-control" id="bank" name="bank">
+                        <option value="BCA" {{ (old('bank') ?? $karyawan->bank) == 'BCA' ? 'selected' : '' }}>Bank
+                            Central Asia</option>
+                        <option value="Mandiri" {{ (old('bank') ?? $karyawan->bank) == 'Mandiri' ? 'selected' : '' }}>Bank
+                            Mandiri</option>
+                        <option value="BNI" {{ (old('bank') ?? $karyawan->bank) == 'BNI' ? 'selected' : '' }}>BNI
+                        </option>
+                    </select>
                 </div>
                 <!-- Tombol Submit -->
                 <button type="submit" class="btn btn-primary">Simpan Perubahan</button>

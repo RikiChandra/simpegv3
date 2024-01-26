@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Karyawan;
 use App\Models\Lamaran;
 use App\Models\Lowongan;
 use Illuminate\Http\Request;
@@ -50,14 +51,26 @@ class LamaranController extends Controller
         //
         $validatedData = $request->validate([
             'lowongan_id' => 'required',
+            'foto' => 'required|mimes:jpg,jpeg,png|max:2048',
             'nama_lengkap' => 'required',
             'email' => 'required',
             'nomor_telepon' => 'required',
+            'alamat' => 'required',
+            'jenis_kelamin' => 'required',
+            'tanggal_lahir' => 'required',
+            'tempat_lahir' => 'required',
+            'agama' => 'required',
+            'pendidikan' => 'required',
             'portofolio' => 'required',
             'resume' => 'required|mimes:pdf|max:2048',
-            'cover_letter' => 'required',
+            'ijazah' => 'required|mimes:pdf|max:2048',
+            'ktp' => 'required|mimes:jpg,jpeg,png|max:2048',
         ]);
 
+
+        $validatedData['foto'] = $request->file('foto')->store('foto-pelamar');
+        $validatedData['ijazah'] = $request->file('ijazah')->store('ijazah-pdf');
+        $validatedData['ktp'] = $request->file('ktp')->store('ktp-img');
         $validatedData['resume'] = $request->file('resume')->store('resume-pdf');
 
         Lamaran::create($validatedData);
@@ -97,7 +110,8 @@ class LamaranController extends Controller
 
         $validatedData = $request->validate([
             'status' => 'required',
-            'keterangan' => 'required',
+            'keterangan' => '',
+            'tanggal' => '',
         ]);
 
         Lamaran::where('id', $lamaran->id)->update($validatedData);
@@ -107,6 +121,23 @@ class LamaranController extends Controller
             $message->to($lamaran->email)
                 ->subject('Konfirmasi Lamaran');
         });
+
+        if ($request->status == 'Diterima') {
+            Karyawan::create([
+                'users_id' => Null,
+                'nama' => $request->nama,
+                'foto' => $request->foto,
+                'alamat' => $request->alamat,
+                'telepon' => $request->telepon,
+                'email' => $request->email,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'tempat_lahir' => $request->tempat_lahir,
+                'agama' => $request->agama,
+                'pendidikan' => $request->pendidikan,
+            ]);
+        }
+
 
         return redirect()->route('lamaran.index')->with('success', 'Status lamaran berhasil diubah');
     }

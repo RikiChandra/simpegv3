@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('karyawans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('users_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate()->unique();
+            // $table->foreignId('users_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate()->unique()->nullable();
+            $table->unsignedBigInteger('users_id')->nullable();
+            $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('nama');
             $table->string('alamat')->nullable();
             $table->string('telepon')->nullable();
@@ -26,6 +28,8 @@ return new class extends Migration
             $table->string('pendidikan')->nullable();
             $table->string('jabatan')->nullable();
             $table->string('status')->nullable();
+            $table->string('nik_pegawai')->nullable();
+            $table->string('bank')->nullable();
             $table->string('no_ktp')->nullable();
             $table->string('no_rekening')->nullable();
             $table->softDeletes();

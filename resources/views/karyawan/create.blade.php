@@ -117,12 +117,25 @@
                 <div class="form-group">
                     <label for="NoKTP">Nomor KTP</label>
                     <input type="text" class="form-control" id="NoKTP" placeholder="Masukkan Nomor KTP"
-                        name="no_ktp">
+                        name="no_ktp" maxlength="16">
+                </div>
+                <div class="form-group">
+                    <label for="NoNik">NIK Karyawan</label>
+                    <input type="text" class="form-control" id="NoNik" placeholder="Masukkan Nomor NIK Pegawai"
+                        name="nik_pegawai">
                 </div>
                 <div class="form-group">
                     <label for="NoRekening">Nomor Rekening</label>
                     <input type="text" class="form-control" id="NoRekening" placeholder="Masukkan Nomor Rekening"
                         name="no_rekening">
+                </div>
+                <div class="form-group">
+                    <label for="bank">Bank</label>
+                    <select class="form-control" id="bank" name="bank">
+                        <option value="BCA">Bank Central Asia</option>
+                        <option value="Mandiri">Bank Mandiri</option>
+                        <option value="BNI">BNI</option>
+                    </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </form>

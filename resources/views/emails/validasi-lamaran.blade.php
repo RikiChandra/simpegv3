@@ -44,12 +44,28 @@
             <div class="alert-alert-success">
                 <p class="thank-you">Selamat!</p>
                 <p>Pengajuan Lamaran Anda Diterima</p>
-                <p>Silahkan menghubungi kontak perusahaan yang tersedia dan membawa berkas persyaratan ke kantor perusahaan.</p>
-            </div>        
+                <p>Silahkan menghubungi kontak perusahaan yang tersedia dan membawa berkas persyaratan ke kantor
+                    perusahaan.</p>
+            </div>
         @elseif($lamaran->status === 'Ditolak')
             <div class="alert-alert-success">
                 <h2>Konfirmasi Lamaran</h2>
                 <p>Mohon Maaf Pengajuan Lamaran Anda Ditolak.</p>
+            </div>
+        @elseif($lamaran->status === 'Interview')
+            <div class="alert alert-success">
+                <h2>Undangan Interview</h2>
+                <p>Kepada Saudara/i {{ $lamaran->nama_lengkap }},</p>
+                <p>Kami ingin mengucapkan terima kasih atas minat Anda untuk bergabung dengan perusahaan kami. Kami
+                    senang untuk mengundang Anda untuk mengikuti tahap wawancara yang akan dilaksanakan pada:</p>
+                <p><strong>Tanggal:</strong> {{ $lamaran->tanggal }}</p>
+                <p><strong>Waktu:</strong> 10:00</p>
+                <p><strong>Lokasi:</strong> Jl. Kirangga Wira Sentika</p>
+                <p>Silakan mempersiapkan diri Anda dengan baik untuk tahap wawancara ini. Kami berharap untuk bertemu
+                    dengan Anda dan membahas lebih lanjut tentang kesempatan kerja yang ada.</p>
+                <p>Jika ada pertanyaan atau perlu informasi lebih lanjut, jangan ragu untuk menghubungi kami.</p>
+                <p>Terima kasih dan salam hormat,</p>
+                <p><strong>HRD PT Atap Langit Indonesia</strong></p>
             </div>
         @endif
     </div>
